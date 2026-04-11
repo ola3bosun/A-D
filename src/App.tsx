@@ -1,8 +1,9 @@
-import AprokoHero from './components/RotatingImageReel';
+import AprokoHero from "./components/RotatingImageReel";
 // import HeroContent from './components/HeroContent';
-import Navbar from './components/Navbar';
-import CustomCursor from './components/CustomCursor';
-import Footer from './components/Footer';
+import Navbar from "./components/Navbar";
+import CustomCursor from "./components/CustomCursor";
+import Footer from "./components/Footer";
+import ResourcesSection from "./components/ResourcesSection";
 
 function App() {
   return (
@@ -10,9 +11,8 @@ function App() {
       <Navbar />
       <CustomCursor />
       <AprokoHero />
-
+      <ResourcesSection />
       <Footer />
-
     </div>
   );
 }
