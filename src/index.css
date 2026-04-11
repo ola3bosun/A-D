@@ -1,0 +1,56 @@
+*{
+    cursor: none;
+}
+
+@layer base {
+  body {
+    @apply cursor-none;
+  }
+
+  a, button, [role="button"] {
+    @apply cursor-none;
+  }
+}
+
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Clash Grotesk';
+  src: url('/fonts/ClashGrotesk-Regular.woff2') format('woff2');
+  font-weight: 400; 
+  font-display: swap;
+  font-style: normal;
+}
+
+/* 2. The Semibold Weight (600) */
+@font-face {
+  font-family: 'Clash Grotesk';
+  src: url('/fonts/ClashGrotesk-Semibold.woff2') format('woff2'); 
+  font-weight: 600; 
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    src: url('fonts/Manrope-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'MOntserrat';
+    src: url('fonts/Montserrat-Italic.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+    font-style: italic;
+}
+
+@theme {
+  --font-clash: 'Clash Grotesk', sans-serif;
+
+  --font-manrope: 'Manrope', sans-serif;
+}
+
+
