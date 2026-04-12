@@ -5,6 +5,7 @@ export interface VideoItem {
   id: string | number;
   thumbnail: string;
   title: string;
+  cardSubtitle?: string; // NEW: Optional subtitle (e.g., "Unclog")
   timeAgo: string;
   href: string;
 }
@@ -12,9 +13,14 @@ export interface VideoItem {
 interface VideoCarouselProps {
   videos: VideoItem[];
   viewMoreHref?: string;
+  theme?: 'yellow' | 'green'; // NEW: Controls the button color
 }
 
-export default function VideoCarousel({ videos, viewMoreHref = "#" }: VideoCarouselProps) {
+export default function VideoCarousel({ 
+  videos, 
+  viewMoreHref = "#",
+  theme = 'yellow' // Default to yellow
+}: VideoCarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -24,7 +30,7 @@ export default function VideoCarousel({ videos, viewMoreHref = "#" }: VideoCarou
     
     // Dynamically calculate width to ensure perfect alignment
     const cardWidth = container.firstElementChild?.clientWidth || 400;
-    const gap = 18; // gap-4
+    const gap = 18; // gap-4 (Keeping your updated gap)
     const scrollAmount = cardWidth + gap; 
     
     const currentScroll = container.scrollLeft;
@@ -47,6 +53,16 @@ export default function VideoCarousel({ videos, viewMoreHref = "#" }: VideoCarou
     });
   };
 
+// --- Dynamic Theme Styles ---
+  const rightButtonStyles = theme === 'green' 
+    ? "bg-[#35AB57] hover:bg-[#22c55e]" 
+    : "bg-[#FCC81D] hover:bg-[#e5b51a]";
+
+  // Toggle card backgrounds based on the theme
+  const cardBgStyles = theme === 'green'
+    ? "bg-white"
+    : "bg-[#FFFBEA]";
+
   return (
     <div className="flex flex-col flex-1 min-h-0 w-full">
       
@@ -61,22 +77,30 @@ export default function VideoCarousel({ videos, viewMoreHref = "#" }: VideoCarou
             <a 
               key={video.id} 
               href={video.href}
-              className="carousel-card flex flex-col shrink-0 w-[320px] md:w-[33vw] snap-start bg-[#FCFBF8] p-4 rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100/50 transition-all duration-300 group"
+              className={`carousel-card flex flex-col shrink-0 md:w-[33vw] snap-start ${cardBgStyles} p-2 rounded-[1rem] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-300 group`}
             >
               {/* Image Container */}
-              <div className="relative w-full aspect-[16/10] mb-6 overflow-hidden rounded-[1.25rem] bg-gray-100 shrink-0">
+              <div className="relative w-full mb-6 overflow-hidden rounded-[12px] bg-[#FFFBEA]">
                 <img 
                   src={video.thumbnail} 
                   alt={video.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out aspect-video"
                 />
               </div>
 
               {/* Text Content */}
               <div className="px-2 flex flex-col flex-1">
-                <h3 className="font-clash font-medium text-[1.35rem] text-[#1A1A1A] leading-[1.2] mb-4 line-clamp-2 group-hover:text-green-600 transition-colors">
+                {/* Dynamically adjust margin based on whether subtitle exists */}
+                <h3 className={`font-clash font-medium text-[1.35rem] text-[#1A1A1A] leading-[1.2] line-clamp-2 group-hover:text-green-600 transition-colors ${video.cardSubtitle ? 'mb-1' : 'mb-4'}`}>
                   {video.title}
                 </h3>
+
+                {/* Render the "Unclog" subtitle if it exists */}
+                {video.cardSubtitle && (
+                  <p className="text-gray-500 italic text-[1.05rem] font-medium mb-4">
+                    {video.cardSubtitle}
+                  </p>
+                )}
 
                 {/* Footer */}
                 <div className="flex items-center justify-between mt-auto pt-4">
@@ -110,9 +134,11 @@ export default function VideoCarousel({ videos, viewMoreHref = "#" }: VideoCarou
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
           </button>
+
+          {/* Dynamic Right Button */}
           <button 
             onClick={() => scroll('right')}
-            className="w-14 h-14 rounded-full bg-[#FCC81D] flex items-center justify-center shadow-md hover:bg-[#e5b51a] hover:scale-105 transition-all text-white group"
+            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-all text-white group ${rightButtonStyles}`}
             aria-label="Scroll Right"
           >
             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

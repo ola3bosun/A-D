@@ -17,7 +17,7 @@ export default function AprokoNavbar() {
 
   useEffect(() => {
     let ctx = gsap.context(() => {
-      // A. ENTRANCE SEQUENCE (Runs once on mount)
+      // ENTRANCE SEQUENCE (Runs once on mount)
       const tl = gsap.timeline();
 
       // Start the pill collapsed and invisible
@@ -29,18 +29,18 @@ export default function AprokoNavbar() {
         opacity: 1,
         duration: 1,
         ease: "expo.out",
-        delay: 0.2, // Wait a beat before appearing
+        delay: 0.5, // Wait a beat before secondary to loading animation
       }).to(
         ".nav-item",
         {
           y: 0,
           opacity: 1,
           duration: 0.6,
-          stagger: 0.05, // Domino effect for the links
+          stagger: 0.15, // Domino effect for the links
           ease: "back.out(1.5)",
         },
         "-=0.6",
-      ); // Overlap with the pill expansion
+      ); 
 
       // B. SMART SCROLL (Hide on scroll down, show on up)
       const showNav = gsap
@@ -71,7 +71,7 @@ export default function AprokoNavbar() {
     return () => ctx.revert();
   }, []);
 
-  // C. DROPDOWN CHOREOGRAPHY (Runs when state changes)
+  // DROPDOWN CHOREOGRAPHY (Runs when state changes)
   useEffect(() => {
     let ctx = gsap.context(() => {
       if (!dropdownRef.current || !chevronRef.current) return;
@@ -139,7 +139,7 @@ export default function AprokoNavbar() {
         className="relative flex items-center justify-between w-full max-w-4xl bg-[#FFC40040] rounded-lg px-3 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] backdrop-blur-11.8"
       >
         {/* Logo */}
-        <div className="nav-item flex items-center justify-center bg-[#0A0A0A] text-white px-4 py-3 rounded-xl h-12 w-[180px]">
+        <div className="nav-item flex items-center justify-center bg-[#0A0A0A] text-white px-4 py-3 rounded-xl h-12">
           <span className="font-clash-clash-bold text-sm tracking-wide">
             APROKO DOCTOR <br /> GLOBAL
           </span>
