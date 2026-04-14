@@ -30,7 +30,7 @@ export default function VideoCarousel({
     
     // Dynamically calculate width to ensure perfect alignment
     const cardWidth = container.firstElementChild?.clientWidth || 400;
-    const gap = 18; // gap-4 (Keeping your updated gap)
+    const gap = 18;
     const scrollAmount = cardWidth + gap; 
     
     const currentScroll = container.scrollLeft;
@@ -38,7 +38,6 @@ export default function VideoCarousel({
       ? currentScroll - scrollAmount 
       : currentScroll + scrollAmount;
 
-    // Temporarily disable CSS snapping for a smooth GSAP animation
     container.style.scrollSnapType = 'none';
 
     gsap.to(container, {
@@ -47,7 +46,7 @@ export default function VideoCarousel({
       ease: "power3.out", 
       overwrite: true,
       onComplete: () => {
-        // Restore CSS snapping for touch/swipe users once the animation is settled
+
         container.style.scrollSnapType = 'x mandatory';
       }
     });
@@ -77,10 +76,10 @@ export default function VideoCarousel({
             <a 
               key={video.id} 
               href={video.href}
-              className={`carousel-card flex flex-col shrink-0 md:w-[33vw] snap-start ${cardBgStyles} p-2 rounded-[1rem] hover:translate-y-[-40px] transition-all duration-300 group`}
+              className={`carousel-card flex flex-col shrink-0 md:w-[33vw] snap-start ${cardBgStyles} p-2 rounded-2xl hover:-translate-y-10 transition-all duration-300 group`}
             >
               {/* Image Container */}
-              <div className="relative w-full mb-6 overflow-hidden rounded-[12px] bg-[#FFFBEA]">
+              <div className="relative w-full mb-6 overflow-hidden rounded-xl bg-[#FFFBEA]">
                 <img 
                   // src={video.thumbnail} 
                   alt={video.title} 
@@ -157,7 +156,6 @@ export default function VideoCarousel({
           </svg>
         </a>
       </div>
-
     </div>
   );
 }

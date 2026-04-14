@@ -1,6 +1,4 @@
-*{
-    cursor: none;
-}
+@import "tailwindcss";
 
 @layer base {
   body {
@@ -17,8 +15,6 @@
     display: none;
   }
 }
-
-@import "tailwindcss";
 
 @font-face {
   font-family: 'Clash Grotesk';
@@ -57,6 +53,14 @@
   --font-clash: 'Clash Grotesk', sans-serif;
 
   --font-manrope: 'Manrope', sans-serif;
+}
+
+*{
+    cursor: none;
+}
+
+::selection {
+    background: #000000;
 }
 
 

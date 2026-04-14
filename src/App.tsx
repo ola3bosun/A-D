@@ -5,7 +5,10 @@ import Footer from "./components/Footer";
 import ResourcesSection from "./components/ResourcesSection";
 // import Testimonials from "./components/Testimonials";
 import Testimonialsv2 from "./components/Testimonialv2";
+import Preloader from "./components/Preloader";
 
+
+// IMAGES IN THE RESOURCES SECTION
 import bbl from "./assets/images/Dev assets/bbl.jpg";
 import lossFat from "./assets/images/Dev assets/loss fat HD.jpg";
 import hairline from "./assets/images/Dev assets/hairline.jpg";
@@ -14,8 +17,10 @@ import balancedDiet from "./assets/images/Dev assets/1 (5).jpg";
 
 import unclogPcos from "./assets/images/Dev assets/unclog pcos.jpg";
 import unclogAdhd from "./assets/images/Dev assets/unclog adhd.jpg";
-// import unclogPeriod from "./assets/images/Dev assets/unclog period.jpg";
-// import unclogBirthControl from "./assets/images/Dev assets/unclog birth control.jpg"; 
+import { useState } from "react";
+
+const imagesToPreload = [bbl, lossFat, hairline, hormonalAcne, balancedDiet, unclogPcos, unclogAdhd];
+
 
 const latestVideos = [
   { id: 1, thumbnail: bbl, title: "What they don't tell you about BBL!", timeAgo: "11 days ago", href: "#" },
@@ -34,8 +39,16 @@ const podcastVideos = [
 ];
 
 function App() {
+  const [loadingComplete, setLoadingComplete] = useState(false);
+  
   return (
     <div className="">
+      {!loadingComplete && (
+        <Preloader 
+          imageUrls={imagesToPreload} 
+          onComplete={() => setLoadingComplete(true)} 
+        />
+      )}
       <Navbar />
       <CustomCursor />
       <AprokoHero />
