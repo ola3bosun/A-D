@@ -61,7 +61,7 @@ export default function VoicesOfChange() {
             style={{ 
               // 120px clears your navbar. 
               // i * 24px creates the staggered overlapping tab effect seen in the video.
-              top: `calc(120px + ${i * 24}px)`,
+              top: `calc(120px + ${i * 2}px)`,
               // zIndex ensures the newer cards always cleanly overlap the older ones
               zIndex: i 
             }}

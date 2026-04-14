@@ -136,36 +136,36 @@ export default function AprokoNavbar() {
       {/* The Floating Pill Background */}
       <div
         ref={pillRef}
-        className="relative flex items-center justify-between w-full max-w-4xl bg-[#FFC40040] rounded-lg px-3 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] backdrop-blur-11.8"
+        className="relative flex items-center justify-between w-fit max-w-6xl bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-11.8"
       >
         {/* Logo */}
-        <div className="nav-item flex items-center justify-center bg-[#0A0A0A] text-white px-4 py-3 rounded-xl h-12">
-          <span className="font-clash-clash-bold text-sm tracking-wide">
-            APROKO DOCTOR <br /> GLOBAL
+        <div className="nav-item flex items-center justify-center bg-[#0A0A0A] rounded-[5.28px] h-full mr-4">
+         <span className="text-white font-clash font-medium text-[20px] leading-[150%] tracking-wide  transition-transform duration-300 hover:scale-105 px-3 py-2">
+            APROKO
           </span>
         </div>
 
         {/* Center Links */}
-        <div className="hidden md:flex items-center gap-10 font-clash-clash-medium text-gray-800">
+        <div className="hidden md:flex items-center gap-5 font-clash-clash-medium text-[#000000BF]">
           <MagneticLink 
-          className="nav-item hover:text-green-600 transition-colors"
+          className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
           href="#">
             About
           </MagneticLink>
           <MagneticLink 
-          className="nav-item hover:text-green-600 transition-colors"
+          className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
           href="#">
             Events
           </MagneticLink>
 
           {/* Dropdown Trigger */}
           <div
-            className="nav-item relative flex items-center gap-1 cursor-pointer group pb-4 -mb-4"
+            className="nav-item relative flex items-center gap-1 group pb-4 -mb-4"
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
             {/* The Magnetic Link */}
-            <MagneticLink className="hover:text-green-600 transition-colors">
+            <MagneticLink className="font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]" href="#">
               Resources
             </MagneticLink>
 
@@ -216,11 +216,11 @@ export default function AprokoNavbar() {
           </div>
 
           <MagneticLink 
-          className="nav-item hover:text-green-600 transition-colors"
+          className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
           href="#">
             Contact
           </MagneticLink>
-          <MagneticLink className="nav-item text-yellow-600 font-clash-semibold hover:text-yellow-700 transition-colors">
+          <MagneticLink className="nav-item text-[#D09F00] font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]" href="#">
             EN
           </MagneticLink>
         </div>
@@ -228,7 +228,7 @@ export default function AprokoNavbar() {
         {/* CTA Button */}
         <div className="nav-item">
           {/* Added a subtle scale effect on hover via Tailwind */}
-          <button className="bg-[#0A0A0A] text-white px-6 py-3 rounded-xl font-clash-medium tracking-wide hover:scale-105 transition-transform duration-300 shadow-md">
+          <button className="ml-8 bg-[#0A0A0A] text-white px-6 py-3 font-clash font-medium text-[20px] leading-[150%] tracking-wide shadow-md transition-transform duration-300 hover:scale-105 rounded-lg">
             Discover awadoc
           </button>
         </div>

@@ -57,9 +57,9 @@ export default function VoicesOfChange() {
 
         // Animate the current card shrinking and dimming as the NEXT card approaches
         gsap.to(card, {
-          scale: 0.92, // Shrinks slightly backward
-          opacity: 0.4, // Dims out
-          filter: 'blur(2px)', // Optional: Adds a nice camera depth-of-field effect
+          scale: 0.85, // Shrinks slightly backward
+          opacity: 1, // Dims out
+          filter: 'blur(1px)', // Optional: Adds a nice camera depth-of-field effect
           scrollTrigger: {
             trigger: cards[index + 1], // Triggered by the scroll position of the NEXT card
             start: "top bottom", // Starts when the next card enters the bottom of the screen

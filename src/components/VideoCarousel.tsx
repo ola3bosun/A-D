@@ -77,7 +77,7 @@ export default function VideoCarousel({
             <a 
               key={video.id} 
               href={video.href}
-              className={`carousel-card flex flex-col shrink-0 md:w-[33vw] snap-start ${cardBgStyles} p-2 rounded-[1rem] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-300 group`}
+              className={`carousel-card flex flex-col shrink-0 md:w-[33vw] snap-start ${cardBgStyles} p-2 rounded-[1rem] hover:bg-[#22c55e] transition-all duration-300 group`}
             >
               {/* Image Container */}
               <div className="relative w-full mb-6 overflow-hidden rounded-[12px] bg-[#FFFBEA]">
@@ -89,7 +89,7 @@ export default function VideoCarousel({
               </div>
 
               {/* Text Content */}
-              <div className="px-2 flex flex-col flex-1">
+              <div className="px-8 flex flex-col flex-1">
                 {/* Dynamically adjust margin based on whether subtitle exists */}
                 <h3 className={`font-clash font-medium text-[1.35rem] text-[#1A1A1A] leading-[1.2] line-clamp-2 group-hover:text-green-600 transition-colors ${video.cardSubtitle ? 'mb-1' : 'mb-4'}`}>
                   {video.title}
