@@ -118,14 +118,14 @@ export default function VoicesOfChange() {
       </div>
 
       {/* --- Newsletter CTA (Matches screenshot bottom) --- */}
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="bg-[#FCFBF8] rounded-[2rem] p-8 md:p-12 shadow-sm border border-gray-100/80 flex flex-col md:flex-row md:items-end justify-between gap-8">
+      <div className="max-w-92vw mx-auto px-6">
+        <div className="bg-[#FFFBEA] rounded-[2rem] p-8 md:p-12 shadow-sm border border-gray-100/80 flex flex-col md:flex-row md:items-end justify-between gap-8">
           
-          <div className="max-w-xl">
-            <h2 className="font-clash text-3xl md:text-4xl font-medium text-[#1A1A1A] mb-4 tracking-tight">
+          <div className="max-w-100%">
+            <h2 className="font-clash font-medium text-[60px] leading-[110%] tracking-[-0.025em] text-[#212121]">
               Become part of AprokoNation
             </h2>
-            <p className="text-gray-500 text-sm md:text-base font-medium mb-8">
+            <p className="text-[#474747] font-manrope font-medium text-text-md tracking-[-0.025em]">
               Subscribe to my Newsletter to get weekly health insights, research updates, and exclusive content from Dr. Chinonso Egemba.
             </p>
             

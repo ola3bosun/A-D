@@ -98,7 +98,7 @@ export default function AprokoHero() {
           // Ratio goes from -1 (top) to 0 (center) to 1 (bottom)
           const ratio = (imgCenterY - centerY) / centerY; 
           
-          // Sine wave creates the organic ease-in-out curve
+          // sine wave creates the organic ease-in-out curve
           const sineEase = Math.sin(ratio * (Math.PI / 2)); 
           
           const xOffset = (ratio * ratio * curveIntensity); 
