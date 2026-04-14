@@ -168,6 +168,14 @@ export default function AprokoHero() {
              Discover awadoc
            </button>
         </div>
+
+        <span className="font-clash font-normal text-[24px] leading-relaxed mt-15 absolute bottom-15 left-1/2 transform -translate-x-1/2">
+          Scroll !
+        </span>
+
+        <div className='bg-linear-to-b from-[#FFFFFF00] to-[#F5F3E9] absolute bottom-0 left-0 w-full h-17.5'> 
+        </div>
+
       </div>
 
       {/* RIGHT TRACK */}

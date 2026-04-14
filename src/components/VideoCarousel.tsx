@@ -3,7 +3,7 @@ import gsap from 'gsap';
 
 export interface VideoItem {
   id: string | number;
-  thumbnail: string;
+  // thumbnail: URL | string;
   title: string;
   cardSubtitle?: string; // NEW: Optional subtitle (e.g., "Unclog")
   timeAgo: string;
@@ -77,12 +77,12 @@ export default function VideoCarousel({
             <a 
               key={video.id} 
               href={video.href}
-              className={`carousel-card flex flex-col shrink-0 md:w-[33vw] snap-start ${cardBgStyles} p-2 rounded-[1rem] hover:bg-[#22c55e] transition-all duration-300 group`}
+              className={`carousel-card flex flex-col shrink-0 md:w-[33vw] snap-start ${cardBgStyles} p-2 rounded-[1rem] hover:translate-y-[-40px] transition-all duration-300 group`}
             >
               {/* Image Container */}
               <div className="relative w-full mb-6 overflow-hidden rounded-[12px] bg-[#FFFBEA]">
                 <img 
-                  src={video.thumbnail} 
+                  // src={video.thumbnail} 
                   alt={video.title} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out aspect-video"
                 />
