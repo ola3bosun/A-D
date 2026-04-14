@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+// 1. Safe imports for Vite
 import img1 from '../assets/images/Dev assets/1 (1).jpg';
 import img2 from '../assets/images/Dev assets/1 (2).jpg';
 import img3 from '../assets/images/Dev assets/1 (3).jpg';
@@ -9,13 +10,19 @@ import img4 from '../assets/images/Dev assets/1 (4).jpg';
 import img5 from '../assets/images/Dev assets/1 (5).jpg';
 import img6 from '../assets/images/Dev assets/1 (6).jpg';
 import img7 from '../assets/images/Dev assets/1 (7).jpg';
-import img8 from '../assets/images/Dev assets/1 (8).jpg';
+import img8 from '../assets/images/Dev assets/1 (8).jpg'; 
 
 gsap.registerPlugin(ScrollTrigger);
 
+// 2. THE CONVEYOR BELT ARRAYS
+const sequence = [img1, img2, img3, img4, img5, img6, img7, img8];
 
-const halfOne = [img1, img2, img3, img4, img5, img6, img7, img8];
-const loopedImages = [...halfOne, ...halfOne];
+// Left Track (Moves UP): Standard order
+const leftTrackImages = [...sequence, ...sequence];
+
+// Right Track (Moves DOWN): Reversed order to simulate the back of the belt
+const reversedSequence = [...sequence].reverse();
+const rightTrackImages = [...reversedSequence, ...reversedSequence];
 
 export default function AprokoHero() {
   const leftTrackRef = useRef<HTMLDivElement>(null);
@@ -26,24 +33,23 @@ export default function AprokoHero() {
   const rightImagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx = gsap.context(() => {
       
-      // THE MASTER TIMELINE
-      // This guarantees both tracks are mathematically locked to the same render tick
+      // --- THE MASTER TIMELINE ---
       const wheelTl = gsap.timeline({ repeat: -1 });
 
       wheelTl.to(leftTrackRef.current, {
         yPercent: -50,
         ease: "none",
         duration: 20
-      }, 0); // The '0' forces this to start at exactly 0.000s
+      }, 0); 
 
       wheelTl.fromTo(rightTrackRef.current, 
         { yPercent: -50 },
         { yPercent: 0, ease: "none", duration: 20 },
-      0); // Also starts at exactly 0.000s
+      0); 
 
-      // Velocity Speed Control with PINNING
+      // --- VELOCITY SPEED CONTROL ---
       let scrollTimeout: ReturnType<typeof setTimeout>;
 
       ScrollTrigger.create({
@@ -52,12 +58,14 @@ export default function AprokoHero() {
         end: "+=100%", 
         pin: true,
         onUpdate: (self) => {
-          const velocity = Math.abs(self.getVelocity());
-          const targetTimeScale = 1 + velocity / 150; 
+          // Absolute value ensures velocity only speeds up, never reverses
+          const velocity = Math.abs(self.getVelocity()); 
 
-          // We now accelerate the entire Master Timeline at once
+          let targetTimeScale = 1 + (velocity / 200); 
+          targetTimeScale = gsap.utils.clamp(1, 6, targetTimeScale);
+
           gsap.to(wheelTl, {
-            timeScale: Math.min(targetTimeScale, 8), 
+            timeScale: targetTimeScale, 
             duration: 0.2, 
             overwrite: true,
           });
@@ -70,26 +78,32 @@ export default function AprokoHero() {
               ease: "power2.out",
               overwrite: true
             });
-          }, 200);
+          }, 150);
         }
       });
 
-      // 3. THE CURVE PHYSICS ENGINE (Unchanged, works perfectly)
+      // --- THE CURVE PHYSICS ENGINE (MATH.SIN) ---
       const updateCurves = () => {
         const windowHeight = window.innerHeight;
         const centerY = windowHeight / 2;
         
-        const curveIntensity = 25; 
-        const rotationIntensity = 12; 
+        const curveIntensity = 15; 
+        const maxRotation = 9.5; // Max degrees of rotation at the edges
 
         leftImagesRef.current.forEach((img) => {
           if (!img) return;
           const rect = img.getBoundingClientRect();
           const imgCenterY = rect.top + rect.height / 2;
+          
+          // Ratio goes from -1 (top) to 0 (center) to 1 (bottom)
           const ratio = (imgCenterY - centerY) / centerY; 
           
+          // Sine wave creates the organic ease-in-out curve
+          const sineEase = Math.sin(ratio * (Math.PI / 2)); 
+          
           const xOffset = (ratio * ratio * curveIntensity); 
-          const rotation = - (ratio * rotationIntensity);
+          const rotation = -(sineEase * maxRotation);
+          
           gsap.set(img, { x: xOffset, rotation: rotation });
         });
 
@@ -97,10 +111,14 @@ export default function AprokoHero() {
           if (!img) return;
           const rect = img.getBoundingClientRect();
           const imgCenterY = rect.top + rect.height / 2;
-          const ratio = (imgCenterY - centerY) / centerY; 
           
-          const xOffset = - (ratio * ratio * curveIntensity); 
-          const rotation = (ratio * rotationIntensity); 
+          const ratio = (imgCenterY - centerY) / centerY; 
+          const sineEase = Math.sin(ratio * (Math.PI / 2));
+          
+          const xOffset = -(ratio * ratio * curveIntensity); 
+          // Mirrored rotation for the right side
+          const rotation = (sineEase * maxRotation); 
+          
           gsap.set(img, { x: xOffset, rotation: rotation });
         });
       };
@@ -118,8 +136,9 @@ export default function AprokoHero() {
   return (
     <section ref={sectionRef} className="relative h-svh w-full bg-[#FAFAF8] overflow-hidden flex items-center justify-center">
       
-      <div className="absolute left-0 md:left-8 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
-        {loopedImages.map((src, i) => (
+      {/* LEFT TRACK */}
+      <div className="absolute left-0 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
+        {leftTrackImages.map((src, i) => (
           <img 
             key={`left-${i}`} 
             ref={(el) => { leftImagesRef.current[i] = el; }}
@@ -130,6 +149,7 @@ export default function AprokoHero() {
         ))}
       </div>
 
+      {/* CENTER CONTENT */}
       <div className="z-10 text-center flex flex-col items-center w-full max-w-2xl px-4">
         <h1 className="font-clash text-[#373737] text-[60px] leading-[120%] tracking-[-0.025em] text-center">
           Your Doctor Friend Has Gist <span className="text-[60px]">👀</span>
@@ -137,7 +157,7 @@ export default function AprokoHero() {
         <p className="font-mont font-normal italic text-[40px] text-[#35AB57] leading-[120%] text-center pb-[16px]">
           — And It Could Save Your Life
         </p>
-        <p className="text-[#474747] mb-8 text-lg" font-manrope>
+        <p className="text-[#474747] mb-8 text-lg font-manrope">
           Real health advice. No big grammar. No long queue. Just clear, honest information that keeps you and your people well.
         </p>
         <div className="flex gap-4">
@@ -150,8 +170,9 @@ export default function AprokoHero() {
         </div>
       </div>
 
-      <div className="absolute right-0 md:right-8 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={rightTrackRef}>
-        {loopedImages.map((src, i) => (
+      {/* RIGHT TRACK */}
+      <div className="absolute right-0 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={rightTrackRef}>
+        {rightTrackImages.map((src, i) => (
            <img 
              key={`right-${i}`} 
              ref={(el) => { rightImagesRef.current[i] = el; }}
