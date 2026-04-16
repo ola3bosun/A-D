@@ -27,12 +27,12 @@ const footerLinks = {
     { name: 'Cookie Settings', href: '#' },
   ],
   socials: [
-    { name: 'Facebook', href: '#', icon: FaFacebook, hoverColor: 'group-hover:text-[#1877F2]' },
-    { name: 'Instagram', href: '#', icon: FaInstagram, hoverColor: 'group-hover:text-[#E4405F]' },
+    { name: 'Facebook', href: '#', icon: FaFacebook, hoverColor: 'group-hover:text-white' },
+    { name: 'Instagram', href: '#', icon: FaInstagram, hoverColor: 'group-hover:text-white' },
     { name: 'X', href: '#', icon: FaXTwitter, hoverColor: 'group-hover:text-white' },
     { name: 'TikTok', href: '#', icon: FaTiktok, hoverColor: 'group-hover:text-white' },
-    { name: 'LinkedIn', href: '#', icon: FaLinkedin, hoverColor: 'group-hover:text-[#0A66C2]' },
-    { name: 'YouTube', href: '#', icon: FaYoutube, hoverColor: 'group-hover:text-[#FF0000]' },
+    { name: 'LinkedIn', href: '#', icon: FaLinkedin, hoverColor: 'group-hover:text-white' },
+    { name: 'YouTube', href: '#', icon: FaYoutube, hoverColor: 'group-hover:text-white' },
   ]
 };
 
@@ -54,14 +54,14 @@ export default function AprokoFooter() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: footerRef.current,
-            start: "top 80%",
+            start: "top 70%",
           }
         }
       );
 
       // Parallax big text
       gsap.fromTo(bigTextRef.current,
-        { y: '25%' }, 
+        { y: '50%' }, 
         {
           y: '5%', 
           ease: "none",
@@ -76,9 +76,9 @@ export default function AprokoFooter() {
 
       // Slide up glass
       gsap.fromTo(glassRef.current,
-        { y: 500 },
+        { y: '100%' },
         {
-          y: 0,
+          y: '70%',
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".water-section",
@@ -207,7 +207,7 @@ export default function AprokoFooter() {
             ref={glassRef}
             src={glass}
             alt="Glass of water" 
-            className="h-[25svh] max-h-[500px] object-contain"
+            className="h-full object-contain"
           />
         </div>
       </div>

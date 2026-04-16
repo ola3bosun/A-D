@@ -6,6 +6,7 @@ import ResourcesSection from "./components/ResourcesSection";
 // import Testimonials from "./components/Testimonials";
 import Testimonialsv2 from "./components/Testimonialv2";
 import Preloader from "./components/Preloader";
+import ImpactSection from "./components/ImpactSection";
 
 
 // IMAGES IN THE RESOURCES SECTION
@@ -52,6 +53,7 @@ function App() {
       <Navbar />
       <CustomCursor />
       <AprokoHero />
+      <ImpactSection />
       {/* The Video Section */}
       <ResourcesSection 
         subtitle="Resources"

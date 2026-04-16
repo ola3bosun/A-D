@@ -60,7 +60,12 @@
 }
 
 ::selection {
-    background: #000000;
+    background: #ededed;
 }
 
+/* for marquee in impact section */
+.mask-linear-fade {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
 
