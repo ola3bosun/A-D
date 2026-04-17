@@ -23,11 +23,11 @@ export default function ResourcesSection({
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%", 
+          start: "top 70%", 
         }
       });
 

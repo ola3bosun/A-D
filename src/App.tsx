@@ -7,7 +7,7 @@ import ResourcesSection from "./components/ResourcesSection";
 import Testimonialsv2 from "./components/Testimonialv2";
 import Preloader from "./components/Preloader";
 import ImpactSection from "./components/ImpactSection";
-import Awadoc from "./components/Awadoc";
+import AwadocSection from "./components/AwadocSection";
 import CapabilitiesSection from "./components/CapabilitiesSection";
 
 
@@ -57,7 +57,7 @@ function App() {
       <AprokoHero />
       <ImpactSection />
       <CapabilitiesSection />
-      <Awadoc />
+      <AwadocSection />
       {/* The Video Section */}
       <ResourcesSection 
         subtitle="Resources"

@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// 1. Safe imports for Vite
 import img1 from '../assets/images/Dev assets/1 (1).jpg';
 import img2 from '../assets/images/Dev assets/1 (2).jpg';
 import img3 from '../assets/images/Dev assets/1 (3).jpg';
@@ -14,7 +13,7 @@ import img8 from '../assets/images/Dev assets/1 (8).jpg';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// 2. THE CONVEYOR BELT ARRAYS
+// THE CONVEYOR BELT ARRAYS
 const sequence = [img1, img2, img3, img4, img5, img6, img7, img8];
 
 // Left Track (Moves UP): Standard order
@@ -33,9 +32,9 @@ export default function AprokoHero() {
   const rightImagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       
-      // --- THE MASTER TIMELINE ---
+      // THE MASTER TIMELINE
       const wheelTl = gsap.timeline({ repeat: -1 });
 
       wheelTl.to(leftTrackRef.current, {
@@ -49,7 +48,7 @@ export default function AprokoHero() {
         { yPercent: 0, ease: "none", duration: 20 },
       0); 
 
-      // --- VELOCITY SPEED CONTROL ---
+      // VELOCITY SPEED CONTROL 
       let scrollTimeout: ReturnType<typeof setTimeout>;
 
       ScrollTrigger.create({
@@ -82,7 +81,7 @@ export default function AprokoHero() {
         }
       });
 
-      // --- THE CURVE PHYSICS ENGINE (MATH.SIN) ---
+      // THE CURVE PHYSICS ENGINE (MATH.SIN)
       const updateCurves = () => {
         const windowHeight = window.innerHeight;
         const centerY = windowHeight / 2;

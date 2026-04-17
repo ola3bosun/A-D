@@ -6,10 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaYoutube } from 'react-icons/fa';
 import { PiArmchairFill } from 'react-icons/pi';
 
-
-// import img1 from '../assets/images/Dev assets/w glass of water.png';
-// import img2 from '../assets/images/Dev assets/w glass of water.png';
-// import img3 from '../assets/images/Dev assets/w glass of water.png';
+// import awadoc from '../assets/images/Dev assets/awadoc icon.svg';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,10 +14,10 @@ const capabilities = [
   {
     id: 1,
     icon: FaYoutube,
-    iconColor: "text-[#FF0000]", // YouTube Red
+    iconColor: "text-[#FF0000]",
     title: "Health education through content",
     text: "Making complex medical topics simple enough to share with your mum. Through YouTube videos, reels, and social content, Aproko Doctor breaks down what your body is doing — and what you should actually do about it.",
-    imgSrc: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1000", // Placeholder
+    imgSrc: "../assets/images/Dev assets/1 (1).jpg", // Placeholder
   },
   {
     id: 2,
@@ -28,7 +25,7 @@ const capabilities = [
     iconColor: "text-[#1A1A1A]", // Dark Gray/Black
     title: "Global advocacy and speaking",
     text: "From Lagos to London, the message is the same: your health decisions deserve better information. Aproko Doctor takes that conversation to every stage, boardroom, and conference that matters.",
-    imgSrc: "{awadoc}", // Placeholder
+    imgSrc: "../assets/images/Dev assets/1 (1).jpg", // Placeholder
   },
   {
     id: 3,
@@ -36,7 +33,7 @@ const capabilities = [
     iconColor: "text-[#35AB57]", // Brand Green/Teal
     title: "Health-tech innovation with awadoc",
     text: "Where healthcare meets the future. Awadoc is building the digital infrastructure that puts doctors and patients on the same page — cutting the guesswork out of getting well.",
-    imgSrc: "{awadoc}", // Placeholder
+    imgSrc: "../assets/images/Dev assets/1 (1).jpg", // Placeholder
   }
 ];
 
