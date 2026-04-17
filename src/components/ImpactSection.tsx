@@ -10,8 +10,8 @@ import gatesLogo from '../assets/images/Dev assets/bill gates.svg';
 import whoLogo from '../assets/images/Dev assets/who.svg';
 import unicefLogo from '../assets/images/Dev assets/unicef.svg';
 import tedxLogo from '../assets/images/Dev assets/TEDX.svg';
-import newsCentralLogo from '../assets/images/Dev assets/TEDX.svg';
-import ariseLogo from '../assets/images/Dev assets/TEDX.svg';
+import newsCentralLogo from '../assets/images/Dev assets/news central.svg';
+import ariseLogo from '../assets/images/Dev assets/Arise.svg';
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -134,13 +134,6 @@ export default function Preloader({ imageUrls, onComplete }: PreloaderProps) {
         </div>
       </div>
 
-      {/* The Pill Button pinned to bottom */}
-      <div className="absolute bottom-12 px-6 py-3 rounded-full border border-gray-400 bg-transparent flex items-center gap-3 z-10">
-        <span className="text-gray-600 font-medium text-sm md:text-base">
-          Have you drank water today ? 👀
-        </span>
-      </div>
-
       {/* --- THE GREEN SWEEPING CURTAIN --- */}
       <div 
         ref={greenSweepRef}

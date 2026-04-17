@@ -7,6 +7,8 @@ import ResourcesSection from "./components/ResourcesSection";
 import Testimonialsv2 from "./components/Testimonialv2";
 import Preloader from "./components/Preloader";
 import ImpactSection from "./components/ImpactSection";
+import Awadoc from "./components/Awadoc";
+import CapabilitiesSection from "./components/CapabilitiesSection";
 
 
 // IMAGES IN THE RESOURCES SECTION
@@ -54,6 +56,8 @@ function App() {
       <CustomCursor />
       <AprokoHero />
       <ImpactSection />
+      <CapabilitiesSection />
+      <Awadoc />
       {/* The Video Section */}
       <ResourcesSection 
         subtitle="Resources"
