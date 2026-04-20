@@ -36,9 +36,9 @@ export default function ResourcesSection({
         { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" }
       )
       .fromTo('.carousel-card',
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" },
-        "-=0.5" 
+        { y: 50, opacity: 0.6 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "back.out" },
+        "-=0.2" 
       )
       .fromTo('.reveal-controls',
         { y: 20, opacity: 0 },
