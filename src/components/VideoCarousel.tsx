@@ -3,7 +3,7 @@ import gsap from 'gsap';
 
 export interface VideoItem {
   id: string | number;
-  thumbnail: URL | string;
+  thumbnail: string;
   title: string;
   cardSubtitle?: string; 
   timeAgo: string;

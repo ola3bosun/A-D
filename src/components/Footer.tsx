@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import glass from '../assets/images/glass.png'; 
+import glass from '../assets/images/Dev assets/w glass of water.png'; 
 
 import { FaFacebook, FaInstagram, FaXTwitter, FaTiktok, FaLinkedin, FaYoutube } from 'react-icons/fa6';
 
@@ -76,9 +76,9 @@ export default function AprokoFooter() {
 
       // Slide up glass
       gsap.fromTo(glassRef.current,
-        { y: '100%' },
+        { y: '0%' },
         {
-          y: '70%',
+          y: '50%',
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".water-section",
