@@ -45,7 +45,7 @@ function App() {
   const [loadingComplete, setLoadingComplete] = useState(false);
   
   return (
-    <div className="">
+    <div className="overflow-x-hidden relativ w-full">
       {!loadingComplete && (
         <Preloader 
           imageUrls={imagesToPreload} 

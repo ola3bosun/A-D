@@ -54,7 +54,8 @@ export default function AprokoHero() {
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top", 
-        end: "+=100%", 
+        // FIX 1: Dramatically reduced the pin duration so it unpins much faster, eliminating the "laggy" feel
+        end: "+=30%", 
         pin: true,
         onUpdate: (self) => {
           // Absolute value ensures velocity only speeds up, never reverses
@@ -87,17 +88,15 @@ export default function AprokoHero() {
         const centerY = windowHeight / 2;
         
         const curveIntensity = 15; 
-        const maxRotation = 9.5; // Max degrees of rotation at the edges
+        const maxRotation = 9.5; 
 
         leftImagesRef.current.forEach((img) => {
           if (!img) return;
           const rect = img.getBoundingClientRect();
           const imgCenterY = rect.top + rect.height / 2;
           
-          // Ratio goes from -1 (top) to 0 (center) to 1 (bottom)
           const ratio = (imgCenterY - centerY) / centerY; 
           
-          // sine wave creates the organic ease-in-out curve
           const sineEase = Math.sin(ratio * (Math.PI / 2)); 
           
           const xOffset = (ratio * ratio * curveIntensity); 
@@ -115,7 +114,6 @@ export default function AprokoHero() {
           const sineEase = Math.sin(ratio * (Math.PI / 2));
           
           const xOffset = -(ratio * ratio * curveIntensity); 
-          // Mirrored rotation for the right side
           const rotation = (sineEase * maxRotation); 
           
           gsap.set(img, { x: xOffset, rotation: rotation });
@@ -133,10 +131,10 @@ export default function AprokoHero() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-svh w-full bg-[#FAFAF8] overflow-hidden flex items-center justify-center">
+    <section ref={sectionRef} className="relative h-svh w-full max-w-[100vw] bg-[#FAFAF8] overflow-hidden flex items-center justify-center">
       
       {/* LEFT TRACK */}
-      <div className="absolute left-0 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
+      <div className="absolute left-0 top-0 w-[18%] max-w-50 flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
         {leftTrackImages.map((src, i) => (
           <img 
             key={`left-${i}`} 

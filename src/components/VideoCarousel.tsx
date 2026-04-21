@@ -3,9 +3,9 @@ import gsap from 'gsap';
 
 export interface VideoItem {
   id: string | number;
-  // thumbnail: URL | string;
+  thumbnail: URL | string;
   title: string;
-  cardSubtitle?: string; // NEW: Optional subtitle (e.g., "Unclog")
+  cardSubtitle?: string; 
   timeAgo: string;
   href: string;
 }
@@ -13,7 +13,7 @@ export interface VideoItem {
 interface VideoCarouselProps {
   videos: VideoItem[];
   viewMoreHref?: string;
-  theme?: 'yellow' | 'green'; // NEW: Controls the button color
+  theme?: 'yellow' | 'green';
 }
 
 export default function VideoCarousel({ 
@@ -81,7 +81,7 @@ export default function VideoCarousel({
               {/* Image Container */}
               <div className="relative w-full mb-6 overflow-hidden rounded-xl bg-[#FFFBEA]">
                 <img 
-                  // src={video.thumbnail} 
+                  src={video.thumbnail} 
                   alt={video.title} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out aspect-video"
                 />
