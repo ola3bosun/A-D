@@ -40,51 +40,70 @@ export default function AprokoFooter() {
   const footerRef = useRef<HTMLElement>(null);
   const bigTextRef = useRef<HTMLHeadingElement>(null);
   const glassRef = useRef<HTMLImageElement>(null);
+  const reminderTextRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     let ctx = gsap.context(() => {
-      // Fade in columns
+      
+      // 1. Fade in columns with a premium Expo ease
       gsap.fromTo('.footer-col', 
-        { y: 30, opacity: 0 },
+        { y: 50, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
+          duration: 1.2,
+          stagger: 0.1,
+          ease: "expo.out",
           scrollTrigger: {
             trigger: footerRef.current,
-            start: "top 70%",
+            start: "top 80%",
           }
         }
       );
 
-      // Parallax big text
+      // 2. Parallax Big Text (Subtle drift upward)
       gsap.fromTo(bigTextRef.current,
-        { y: '50%' }, 
+        { y: '20%', opacity: 0.4 }, 
         {
-          y: '5%', 
+          y: '-5%', 
+          opacity: 1,
           ease: "none",
           scrollTrigger: {
             trigger: ".water-section",
             start: "top bottom",
             end: "bottom bottom",
-            scrub: 0.5, 
+            scrub: 1, // Increased to 1 for buttery smooth easing
           }
         }
       );
 
-      // Slide up glass
-      gsap.fromTo(glassRef.current,
-        { y: '0%' },
+      // 3. Float in the "Your reminder to" text
+      gsap.fromTo(reminderTextRef.current,
+        { y: 30, opacity: 0 },
         {
-          y: '50%',
+          y: 0,
+          opacity: 1,
+          duration: 1,
           ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".water-section",
+            start: "top 80%",
+          }
+        }
+      );
+
+      // 4. The Glass Reveal (Rises up from the bottom, slightly scaling up)
+      gsap.fromTo(glassRef.current,
+        { y: '100vh', scale: 0.9 }, // Hidden below the floor
+        {
+          y: '50%', // Rests perfectly at the bottom
+          scale: 1,
+          ease: "none", // 'none' is best for scrubbed animations
           scrollTrigger: {
             trigger: ".water-section",
             start: "top bottom",
             end: "bottom bottom",
-            scrub: 0.5, 
+            scrub: 1, 
           }
         }
       );
@@ -101,30 +120,30 @@ export default function AprokoFooter() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-8 md:mb-12">
           
           <div className="md:col-span-4 footer-col pr-0 md:pr-12">
-            <div className="bg-[#0A0A0A] inline-flex items-center justify-center px-4 py-3 rounded-xl h-14 mb-8 border border-gray-800">
+            <div className="bg-[#0A0A0A] inline-flex items-center justify-center px-4 py-3 rounded-xl h-14 mb-8 border border-gray-800 shadow-lg">
               <span className="font-bold text-[#f4f4f4] text-sm tracking-wide flex items-center gap-2">
                 <span className="text-[#30BF5A]">✚</span> APROKO DOCTOR GLOBAL
               </span>
             </div>
-            <p className="text-manrope text-[1.1rem] leading-relaxed mb-10 max-w-sm tracking-wide">
+            <p className="text-manrope text-[1.1rem] leading-relaxed mb-10 max-w-sm tracking-wide text-gray-300">
               Real health advice. No big grammar. No long queue. Just clear, honest information that keeps you and your people well.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="bg-[#30BF5A]/70 text-[#f4f4f4] px-6 py-3 rounded-lg font-medium hover:bg-[#30BF5A]/90 transition-colors">
+              <button className="bg-[#30BF5A] text-[#f4f4f4] px-6 py-3 rounded-lg font-medium hover:bg-[#28a04b] transition-colors shadow-[0_0_15px_rgba(48,191,90,0.2)]">
                 Let's Talk Health
               </button>
-              <button className="bg-transparent border border-gray-600 text-[#f4f4f4] px-6 py-3 rounded-lg font-medium hover:bg-[#f4f4f4]/10 transition-colors">
+              <button className="bg-transparent border border-gray-600 text-[#f4f4f4] px-6 py-3 rounded-lg font-medium hover:bg-white/5 transition-colors">
                 Discover awadoc
               </button>
             </div>
           </div>
 
           <div className="md:col-span-2 footer-col">
-            <h3 className="font-semibold text-white mb-6 text-base tracking-wide">Index</h3>
+            <h3 className="font-semibold text-white mb-6 text-base tracking-wide uppercase text-xs opacity-70">Index</h3>
             <ul className="space-y-4 text-[0.95rem]">
               {footerLinks.index.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className={`text-gray-400 hover:text-white transition-colors ${link.underline ? 'underline decoration-gray-500 underline-offset-4' : ''}`}>
+                  <a href={link.href} className={`text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-1.5 ${link.underline ? 'underline decoration-gray-500 underline-offset-4' : ''}`}>
                     {link.name}
                   </a>
                 </li>
@@ -133,11 +152,11 @@ export default function AprokoFooter() {
           </div>
 
           <div className="md:col-span-2 footer-col">
-            <h3 className="font-semibold text-white mb-6 text-base tracking-wide">Products</h3>
+            <h3 className="font-semibold text-white mb-6 text-base tracking-wide uppercase text-xs opacity-70">Products</h3>
             <ul className="space-y-4 text-[0.95rem]">
               {footerLinks.products.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-gray-400 hover:text-white transition-colors">
+                  <a href={link.href} className="text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-1.5">
                     {link.name}
                   </a>
                 </li>
@@ -146,11 +165,11 @@ export default function AprokoFooter() {
           </div>
 
           <div className="md:col-span-2 footer-col">
-            <h3 className="font-semibold text-white mb-6 text-base tracking-wide">Terms & Policies</h3>
+            <h3 className="font-semibold text-white mb-6 text-base tracking-wide uppercase text-xs opacity-70">Terms & Policies</h3>
             <ul className="space-y-4 text-[0.95rem]">
               {footerLinks.policies.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-gray-400 hover:text-white transition-colors">
+                  <a href={link.href} className="text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-1.5">
                     {link.name}
                   </a>
                 </li>
@@ -159,15 +178,15 @@ export default function AprokoFooter() {
           </div>
 
           <div className="md:col-span-2 footer-col">
-            <h3 className="font-semibold text-white mb-6 text-base tracking-wide">Socials</h3>
+            <h3 className="font-semibold text-white mb-6 text-base tracking-wide uppercase text-xs opacity-70">Socials</h3>
             <ul className="space-y-4 text-[0.95rem]">
               {footerLinks.socials.map((link) => {
                 const Icon = link.icon; 
                 return (
                   <li key={link.name}>
                     <a href={link.href} className="text-[#A2A2A2] hover:text-white transition-colors duration-300 flex items-center gap-3 group">
-                      <Icon className={`w-5 h-5 text-[#A2A2A2] transition-all duration-300 ease-out ${link.hoverColor}`} />
-                      <span className="transition-transform duration-300 ease-out">
+                      <Icon className={`w-5 h-5 text-[#A2A2A2] transition-all duration-300 ease-out group-hover:scale-110 ${link.hoverColor}`} />
+                      <span className="transition-transform duration-300 ease-out group-hover:translate-x-1.5">
                         {link.name}
                       </span>
                     </a>
@@ -180,8 +199,8 @@ export default function AprokoFooter() {
         </div>
 
         <div className="flex justify-start md:justify-end pb-6 footer-col">
-          <p className="text-[#4D4D4D] text-manrope tracking-wide">
-            Made with Grit by <a href="#" className="text-[#30BF5A] hover:text-green-400 transition-colors text-clash">the nuanced studio</a>
+          <p className="text-[#4D4D4D] text-manrope tracking-wide text-sm">
+            Made with Grit by <a href="#" className="text-[#30BF5A] hover:text-[#30BF5A]/80 transition-colors text-clash font-medium">the nuanced studio</a>
           </p>
         </div>
       </div>
@@ -189,25 +208,30 @@ export default function AprokoFooter() {
       {/* --- Bottom Section: The Glass --- */}
       <div className="water-section relative w-full flex-1 flex flex-col items-center justify-end pointer-events-none min-h-0">
         
-        <p className="text-[24px] font-manrope-regular text-[#f4f4f4] mb-auto mt-4 md:mt-12 z-20">
+        <p ref={reminderTextRef} className="text-[20px] md:text-[24px] font-manrope-regular text-[#A2A2A2] mb-auto mt-4 md:mt-12 z-20 tracking-wide">
           Your reminder to
         </p>
 
-        <h1 
+    <h1
+
           ref={bigTextRef}
+
           className="absolute bottom-[-15%] left-[-5%] w-full text-center font-clash text-[#212121]/83 leading-none tracking-[-0.04em] select-none z-10 whitespace-nowrap"
+
           style={{ fontSize: 'clamp(6rem, 24vw, 32rem)' }}
+
         >
+
           drink water
+
         </h1>
 
-        {/* Wrapper fixes the GSAP horizontal centering issue */}
-        <div className="absolute bottom-0 left-0 w-full flex justify-center z-30 pointer-events-none">
+        <div className="absolute bottom-0 left-0 w-full flex justify-center z-30 pointer-events-none overflow-hidden">
           <img 
             ref={glassRef}
             src={glass}
             alt="Glass of water" 
-            className="h-full object-contain"
+            className="h-[40svh] md:h-[65svh] object-contain origin-bottom will-change-transform"
           />
         </div>
       </div>
