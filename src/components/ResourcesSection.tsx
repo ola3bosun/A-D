@@ -1,71 +1,67 @@
-import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRef } from 'react';
 import VideoCarousel, { type VideoItem } from './VideoCarousel';
 
-gsap.registerPlugin(ScrollTrigger);
-
 interface ResourcesSectionProps {
-  subtitle: string;
   title: string;
+  subtitle: string;
   videos: VideoItem[];
-  theme?: 'yellow' | 'green';
   viewMoreHref?: string;
+  theme?: 'default' | 'white' | 'green'; // Kept so App.tsx doesn't throw an error
 }
 
 export default function ResourcesSection({ 
-  subtitle, 
   title, 
+  subtitle, 
   videos, 
-  theme = 'yellow',
-  viewMoreHref = "#" 
+  viewMoreHref, 
+  theme = 'default' 
 }: ResourcesSectionProps) {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  
+  const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%", 
-        }
-      });
-
-      tl.fromTo('.reveal-text', 
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" }
-      )
-      .fromTo('.carousel-card',
-        { y: 50, opacity: 0.6 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "back.out" },
-        "-=0.2" 
-      )
-      .fromTo('.reveal-controls',
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
-        "-=0.4"
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  // Enforcing the single light background for everything
+  const bgColor = 'bg-[#F5F3E9]';
+  const textColor = 'text-[#1A1A1A]';
+  const subtitleColor = 'text-gray-500';
 
   return (
-    <div ref={sectionRef} className="w-full flex flex-col bg-[#F5F3E9] py-12 md:py-20">
-      <div className="max-w-[100vw] mx-auto px-6 md:px-12 flex flex-col">
-        
-        <div className="mb-4 md:mb-8">
-          <p className="reveal-text text-[#21212180] text-manrope md:text-base font-semibold mb-3 tracking-wide">
-            {subtitle}
-          </p>
-          <h2 className="reveal-text font-clash font-medium text-[64px] leading-[1.05] tracking-[-0.025em] whitespace-pre-line text-[#1A1A1A]">
-            {title}
-          </h2>
-        </div>
-
-        <VideoCarousel videos={videos} viewMoreHref={viewMoreHref} theme={theme} />
-
+    <section 
+      ref={sectionRef} 
+      className={`w-full h-[100svh] ${bgColor} flex flex-col justify-center overflow-hidden relative transition-colors duration-500`}
+    >
+      {/* --- Section Header --- */}
+      <div className="w-full px-6 md:px-12 flex flex-col gap-2 shrink-0 z-10 pt-12 md:pt-0">
+        <p className={`${subtitleColor} text-xs md:text-sm font-medium tracking-wide font-manrope uppercase`}>
+          {subtitle}
+        </p>
+        <h2 className={`font-clash font-medium text-[40px] md:text-[56px] leading-[1.1] tracking-tight ${textColor} whitespace-pre-line`}>
+          {title}
+        </h2>
       </div>
-    </div>
+
+      {/* --- The Carousel Component --- */}
+      <VideoCarousel 
+        videos={videos} 
+        theme={theme} 
+        sectionRef={sectionRef} 
+      />
+
+      {/* --- View More Link (Locked to Bottom Right) --- */}
+      {viewMoreHref && (
+        <div className="absolute bottom-8 right-6 md:bottom-12 md:right-12 z-20">
+          <a 
+            href={viewMoreHref}
+            className={`flex flex-col items-end group transition-opacity hover:opacity-70 ${textColor}`}
+          >
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-sm md:text-base font-semibold font-clash tracking-wide">View More</span>
+              <span className="text-lg leading-none transform transition-transform group-hover:translate-x-1">→</span>
+            </div>
+            {/* The thin underline */}
+            <div className="h-[1px] w-full transition-all duration-300 bg-[#1A1A1A]/30 group-hover:bg-[#1A1A1A]"></div>
+          </a>
+        </div>
+      )}
+    </section>
   );
 }

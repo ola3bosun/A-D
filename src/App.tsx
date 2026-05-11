@@ -1,15 +1,18 @@
+import { useEffect, useState } from "react";
+import Lenis from "lenis";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import AprokoHero from "./components/RotatingImageReel";
 import Navbar from "./components/Navbar";
 import CustomCursor from "./components/CustomCursor";
 import Footer from "./components/Footer";
 import ResourcesSection from "./components/ResourcesSection";
-// import Testimonials from "./components/Testimonials";
 import Testimonialsv2 from "./components/Testimonialv2";
 import Preloader from "./components/Preloader";
 import ImpactSection from "./components/ImpactSection";
 import AwadocSection from "./components/AwadocSection";
 import CapabilitiesSection from "./components/CapabilitiesSection";
-
 
 // IMAGES IN THE RESOURCES SECTION
 import bbl from "./assets/images/Dev assets/bbl.jpg";
@@ -17,13 +20,12 @@ import lossFat from "./assets/images/Dev assets/loss fat HD.jpg";
 import hairline from "./assets/images/Dev assets/hairline.jpg";
 import hormonalAcne from "./assets/images/Dev assets/1 (4).jpg";
 import balancedDiet from "./assets/images/Dev assets/1 (5).jpg";
-
 import unclogPcos from "./assets/images/Dev assets/unclog pcos.jpg";
 import unclogAdhd from "./assets/images/Dev assets/unclog adhd.jpg";
-import { useState } from "react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const imagesToPreload = [bbl, lossFat, hairline, hormonalAcne, balancedDiet, unclogPcos, unclogAdhd];
-
 
 const latestVideos = [
   { id: 1, thumbnail: bbl, title: "What they don't tell you about BBL!", timeAgo: "11 days ago", href: "#" },
@@ -36,16 +38,43 @@ const latestVideos = [
 const podcastVideos = [
   { id: 1, thumbnail: unclogPcos, title: "I almost ended it all because of PCOS", cardSubtitle: "Unclog", timeAgo: "11 days ago", href: "#" },
   { id: 2, thumbnail: unclogAdhd, title: "Vaginismus. How we finally did \"IT\"", cardSubtitle: "Unclog", timeAgo: "11 days ago", href: "#" },
-  // { id: 3, thumbnail: unclogPeriod, title: "The one thing I wish I knew about my period", cardSubtitle: "Unclog", timeAgo: "2 weeks ago", href: "#" },
   { id: 4, thumbnail: unclogPcos, title: "How I lost 20kg with PCOS", cardSubtitle: "Unclog", timeAgo: "3 weeks ago", href: "#" },
-  // { id: 5, thumbnail: unclogBirthControl, title: "The dark side of birth control pills", cardSubtitle: "Unclog", timeAgo: "1 month ago", href: "#" },
 ];
 
 function App() {
   const [loadingComplete, setLoadingComplete] = useState(false);
+
+  useEffect(() => {
+    // 1. Initialize Lenis
+    const lenis = new Lenis({
+      duration: 1.2, // Tweak this: lower is faster, higher is smoother/slower
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Standard ease-out
+      touchMultiplier: 2, // Makes touch scrolling feel a bit more responsive
+    });
+
+    // 2. TIE LENIS TO GSAP SCROLLTRIGGER (CRITICAL FOR PINNING)
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // 3. Sync Lenis's requestAnimationFrame with GSAP's ticker
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    // 4. Disable GSAP's lag smoothing to prevent jittering on heavy scroll moments
+    gsap.ticker.lagSmoothing(0);
+
+    // 5. Cleanup on unmount
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove((time) => {
+        lenis.raf(time * 1000);
+      });
+    };
+  }, []);
   
   return (
-    <div className="overflow-x-hidden relativ w-full">
+    // Fixed "relativ" typo here
+    <div className="overflow-clip relative w-full">
       {!loadingComplete && (
         <Preloader 
           imageUrls={imagesToPreload} 
@@ -58,6 +87,7 @@ function App() {
       <ImpactSection />
       <CapabilitiesSection />
       <AwadocSection />
+      
       {/* The Video Section */}
       <ResourcesSection 
         subtitle="Resources"
@@ -65,6 +95,7 @@ function App() {
         videos={latestVideos}
         viewMoreHref="/resources"
       />
+      
       {/* The Podcast Section */}
       <ResourcesSection 
         subtitle="Resources"
@@ -72,7 +103,7 @@ function App() {
         videos={podcastVideos}
         theme="green" 
       />
-      {/* <Testimonials /> */}
+      
       <Testimonialsv2 />
       <Footer />
     </div>

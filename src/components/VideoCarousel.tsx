@@ -1,160 +1,128 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export interface VideoItem {
-  id: string | number;
+  id: number;
   thumbnail: string;
   title: string;
-  cardSubtitle?: string; 
   timeAgo: string;
   href: string;
+  cardSubtitle?: string;
 }
 
 interface VideoCarouselProps {
   videos: VideoItem[];
-  viewMoreHref?: string;
-  theme?: 'yellow' | 'green';
+  theme?: 'default' | 'white' | 'green'; 
+  sectionRef: React.RefObject<HTMLElement | null>; 
 }
 
-export default function VideoCarousel({ 
-  videos, 
-  viewMoreHref = "#",
-  theme = 'yellow' // Default to yellow
-}: VideoCarouselProps) {
-  const carouselRef = useRef<HTMLDivElement>(null);
+export default function VideoCarousel({ videos, sectionRef }: VideoCarouselProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (!carouselRef.current) return;
-    
-    const container = carouselRef.current;
-    
-    // Dynamically calculate width to ensure perfect alignment
-    const cardWidth = container.firstElementChild?.clientWidth || 400;
-    const gap = 18;
-    const scrollAmount = cardWidth + gap; 
-    
-    const currentScroll = container.scrollLeft;
-    const targetScroll = direction === 'left' 
-      ? currentScroll - scrollAmount 
-      : currentScroll + scrollAmount;
+  // Unified styles for all sections
+  const cardBg = 'bg-[#FFFBEA]'; 
+  const textColor = 'text-[#1A1A1A]';
+  const metaColor = 'text-[#737373]';
 
-    container.style.scrollSnapType = 'none';
+  useEffect(() => {
+    if (!sectionRef) {
+      console.warn("VideoCarousel: sectionRef prop is missing. Animation aborted.");
+      return;
+    }
 
-    gsap.to(container, {
-      scrollLeft: targetScroll,
-      duration: 0.8,
-      ease: "power3.out", 
-      overwrite: true,
-      onComplete: () => {
+    let ctx = gsap.context(() => {
+      const track = trackRef.current;
+      const section = sectionRef.current;
+      
+      if (!track || !section) return;
 
-        container.style.scrollSnapType = 'x mandatory';
-      }
-    });
-  };
+      const getScrollAmount = () => {
+        let trackWidth = track.scrollWidth;
+        return -(trackWidth - window.innerWidth + 80); 
+      };
 
-// --- Dynamic Theme Styles ---
-  const rightButtonStyles = theme === 'green' 
-    ? "bg-[#35AB57] hover:bg-[#22c55e]" 
-    : "bg-[#FCC81D] hover:bg-[#e5b51a]";
+      const tween = gsap.to(track, {
+        x: getScrollAmount,
+        ease: "none",
+      });
 
-  // Toggle card backgrounds based on the theme
-  const cardBgStyles = theme === 'green'
-    ? "bg-white"
-    : "bg-[#FFFBEA]";
+      ScrollTrigger.create({
+        trigger: section, 
+        start: "top top",
+        end: () => `+=${getScrollAmount() * -1}`, 
+        pin: true,
+        animation: tween,
+        scrub: 1, 
+        invalidateOnRefresh: true, 
+      });
+
+      // Recalculate measurements after layout settles to prevent scroll overshoot
+      setTimeout(() => ScrollTrigger.refresh(), 100);
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [videos, sectionRef]);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full">
-      
-      {/* Carousel Track */}
-      <div className="flex-1 min-h-0 relative -mx-6 px-6 md:-mx-12 md:px-12">
-        <div 
-          ref={carouselRef}
-          className="flex gap-6 h-full overflow-x-auto snap-x snap-mandatory pb-8 hide-scrollbar"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {videos.map((video) => (
-            <a 
-              key={video.id} 
-              href={video.href}
-              className={`carousel-card flex flex-col shrink-0 md:w-[33vw] snap-start ${cardBgStyles} p-2 rounded-2xl hover:-translate-y-10 transition-all duration-300 group`}
-            >
-              {/* Image Container */}
-              <div className="relative w-full mb-6 overflow-hidden rounded-xl bg-[#FFFBEA]">
+    <div className="relative w-full pl-6 md:pl-12 mt-8 md:mt-12">
+      <div 
+        ref={trackRef} 
+        // Changed items-stretch to items-start so cards don't blow out vertically
+        className="flex flex-nowrap items-start gap-6 md:gap-8 w-max will-change-transform px-6 md:px-12 pb-8"
+      >
+        {videos.map((video) => (
+          <a 
+            key={video.id} 
+            href={video.href}
+            className={`group flex flex-col shrink-0 w-[85vw] md:w-[35vw] max-w-[480px] cursor-pointer rounded-[2rem] overflow-hidden ${cardBg} shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100/50 transition-transform hover:-translate-y-1 duration-300`}
+          >
+            {/* Added a wrapper div here to provide padding ONLY around the image */}
+            <div className="w-full p-3 md:p-4 pb-0 shrink-0">
+              <div className="w-full aspect-[16/9] overflow-hidden bg-gray-200 relative rounded-2xl md:rounded-[1.25rem]">
                 <img 
                   src={video.thumbnail} 
                   alt={video.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out aspect-video"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
                 />
               </div>
+            </div>
 
-              {/* Text Content */}
-              <div className="px-8 flex flex-col flex-1">
-                {/* Dynamically adjust margin based on whether subtitle exists */}
-                <h3 className={`font-clash font-medium text-[1.35rem] text-[#1A1A1A] leading-[1.2] line-clamp-2 group-hover:text-green-600 transition-colors ${video.cardSubtitle ? 'mb-1' : 'mb-4'}`}>
-                  {video.title}
-                </h3>
-
-                {/* Render the "Unclog" subtitle if it exists */}
-                {video.cardSubtitle && (
-                  <p className="text-gray-500 italic text-[1.05rem] font-medium mb-4">
-                    {video.cardSubtitle}
-                  </p>
-                )}
-
-                {/* Footer */}
-                <div className="flex items-center justify-between mt-auto pt-4">
-                  <span className="text-sm text-gray-500 font-medium">
-                    {video.timeAgo}
-                  </span>
-                  
-                  <div className="flex items-center gap-2 px-4 py-1.5 border border-dashed border-gray-400/80 rounded-full text-sm font-medium text-gray-700 group-hover:border-green-500 group-hover:text-green-600 transition-colors">
-                    Watch 
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-                    </svg>
+            {/* Text Info Container */}
+            <div className="flex flex-col flex-grow p-6 md:p-8 pt-6">
+              {video.cardSubtitle && (
+                <span className="text-xs font-bold uppercase tracking-wider mb-2 font-manrope text-[#35AB57]">
+                  {video.cardSubtitle}
+                </span>
+              )}
+              {/* Card Title */}
+              <h3 className={`font-clash text-2xl md:text-[28px] font-medium leading-[1.2] tracking-tight ${textColor} mb-8`}>
+                {video.title}
+              </h3>
+              
+              {/* Spacer if no subtitle to keep bottoms aligned */}
+              {!video.cardSubtitle && <div className="mb-4"></div>}
+              
+              {/* Bottom Row */}
+              <div className="mt-auto flex items-center justify-between">
+                <p className={`text-sm font-medium font-manrope ${metaColor}`}>
+                  {video.timeAgo}
+                </p>
+                
+                <div className="px-4 py-1.5 rounded-full border border-dashed flex items-center gap-2 transition-colors border-[#1A1A1A]/40 text-[#1A1A1A] group-hover:border-[#1A1A1A] group-hover:bg-black/5">
+                  <span className="text-xs md:text-sm font-medium font-manrope">Watch</span>
+                  <div className="flex items-center justify-center w-[14px] h-[14px] rounded-full border border-[#1A1A1A]">
+                    <div className="w-[4px] h-[4px] rounded-full bg-[#1A1A1A]"></div>
                   </div>
                 </div>
               </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* --- Bottom Controls --- */}
-      <div className="reveal-controls flex items-center justify-between pt-4 md:pt-6 shrink-0">
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={() => scroll('left')}
-            className="w-14 h-14 rounded-full bg-[#FCFBF8] flex items-center justify-center shadow-sm border border-gray-200 hover:bg-white hover:scale-105 transition-all text-gray-400 group"
-            aria-label="Scroll Left"
-          >
-            <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-            </svg>
-          </button>
-
-          {/* Dynamic Right Button */}
-          <button 
-            onClick={() => scroll('right')}
-            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-all text-white group ${rightButtonStyles}`}
-            aria-label="Scroll Right"
-          >
-            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </button>
-        </div>
-
-        <a 
-          href={viewMoreHref} 
-          className="flex items-center gap-2 font-clash font-medium text-[#1A1A1A] text-lg border-b border-[#1A1A1A] pb-1 hover:text-[#22c55e] hover:border-[#22c55e] transition-colors group"
-        >
-          View More 
-          <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-          </svg>
-        </a>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   );

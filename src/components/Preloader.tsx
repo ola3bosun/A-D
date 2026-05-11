@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import gsap from 'gsap';
-
 import glass from '../assets/images/Dev assets/w glass of water.png';
 
 interface PreloaderProps {
@@ -9,143 +8,168 @@ interface PreloaderProps {
 }
 
 export default function Preloader({ imageUrls, onComplete }: PreloaderProps) {
-  const [progress, setProgress] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const greenSweepRef = useRef<HTMLDivElement>(null);
+  const greenLayerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const glassRef = useRef<HTMLDivElement>(null);
+  const loadingGroupRef = useRef<HTMLDivElement>(null);
 
-  // 1. ASYNC IMAGE LOADING LOGIC
+  // 1. ASSET TRACKING
   useEffect(() => {
     let loadedCount = 0;
     const totalImages = imageUrls.length;
-
-    if (totalImages === 0) {
-      setProgress(100);
-      return;
-    }
+    if (totalImages === 0) { setIsLoaded(true); return; }
 
     imageUrls.forEach((url) => {
       const img = new Image();
       img.src = url;
-      
-      const updateProgress = () => {
+      const update = () => {
         loadedCount++;
-        setProgress(Math.floor((loadedCount / totalImages) * 100));
-      };
+        const currentProgress = Math.floor((loadedCount / totalImages) * 100);
+        
+        // Use GSAP to animate the number text for a smoother "count up" feel
+        if (counterRef.current) {
+          gsap.to(counterRef.current, {
+            innerText: currentProgress,
+            duration: 0.5,
+            snap: { innerText: 1 }, // Forces whole numbers
+            ease: "power1.out"
+          });
+        }
 
-      img.onload = updateProgress;
-      img.onerror = updateProgress;
+        if (loadedCount === totalImages) setIsLoaded(true);
+      };
+      img.onload = update;
+      img.onerror = update;
     });
   }, [imageUrls]);
 
-  // 2. THE EXACT VIDEO TIMELINE
+  // 2. THE 10/10 BOUNCE & REVEAL TIMELINE
   useEffect(() => {
-    if (progress !== 100) return;
-
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ onComplete });
+      const tl = gsap.timeline({ paused: true });
 
-      // Ensure start positions
-      gsap.set(greenSweepRef.current, { yPercent: 100, clipPath: "inset(0% 0% 0% 0%)" });
-      gsap.set(textRef.current, { opacity: 0, y: 20 });
+      // INITIAL HIDDEN STATES
+      gsap.set([glassRef.current, loadingGroupRef.current], { y: 50, opacity: 0, scale: 0.9 });
+      gsap.set(greenLayerRef.current, { yPercent: 100, clipPath: "inset(0% 0% 0% 0%)" });
+      gsap.set(textRef.current, { opacity: 0, y: 40 });
 
-      tl.to({}, { duration: 1.5 }) // Brief pause at 100%
+      // PHASE 1: THE BOUNCE ENTRY
+      // This happens immediately on mount
+      gsap.to([glassRef.current, loadingGroupRef.current], {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: "back.out(1.7)" // The "Premium Bounce"
+      });
 
-        // 1. Solid Green sweeps UP to cover screen
-        .to(greenSweepRef.current, {
-          yPercent: 0, 
-          duration: 0.6,
-          ease: "power3.inOut"
-        })
+      // PHASE 2: THE REVEAL SEQUENCE
+      // This triggers only when isLoaded is true
+      if (isLoaded) {
+        tl.to({}, { duration: 0.6 }) // Let the 100% sit for a beat
 
-        // 2. Shrinks to reveal the thick cream borders (clip-path magic)
-        .to(greenSweepRef.current, {
-          clipPath: "inset(3% 3% 3% 3%)",
-          duration: 0.6,
-          ease: "power3.in"
-        })
+          // The snappy green sweep
+          .to(greenLayerRef.current, {
+            yPercent: 0,
+            duration: 0.8,
+            ease: "power4.inOut"
+          })
 
-        // 3. "Drink water!" fades in
-        .to(textRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          ease: "power2.out"
-        }, "-=0.2")
+          // The Frame Inset (The "Mechanical" look at 0:03)
+          .to(greenLayerRef.current, {
+            clipPath: "inset(6% 6% 6% 6%)",
+            duration: 0.6,
+            ease: "expo.out"
+          })
 
-        // 4. Hold to read
-        .to({}, { duration: 1.0 })
+          // Text Bounce In
+          .to(textRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "back.out(1.7)"
+          }, "-=0.3")
 
-        // 5. "Drink water!" fades out
-        .to(textRef.current, { opacity: 0, y: -50, duration: 0.3 })
+          .to({}, { duration: 1.5 }) // Hold
 
-        // 6. Expands back out to full screen
-        .to(greenSweepRef.current, {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 0.4,
-          ease: "power3.inOut"
-        }, "<") // Starts at the same time as text fade out
+          // Exit Sequence
+          .to(greenLayerRef.current, {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 0.4,
+            ease: "expo.in"
+          })
+          .to(greenLayerRef.current, {
+            yPercent: -100,
+            duration: 0.8,
+            ease: "power4.inOut"
+          })
+          .to(containerRef.current, {
+            autoAlpha: 0,
+            duration: 0.4,
+            onComplete // Trigger the landing page reveal
+          }, "-=0.4");
 
-        // 7. Green sweeps UP again to reveal your landing page
-        .to(greenSweepRef.current, {
-          yPercent: -100, 
-          duration: 0.4,
-          ease: "power3.inOut"
-        })
-
-        // 8. Fade out the whole preloader container
-        .to(containerRef.current, {
-          autoAlpha: 0,
-          duration: 0.4
-        }, "-=0.2");
+        tl.play();
+      }
     });
 
     return () => ctx.revert();
-  }, [progress, onComplete]);
+  }, [isLoaded, onComplete]);
 
   return (
-    <div 
-      ref={containerRef} 
-      className="fixed inset-0 z-[9999] bg-[#F5F3E9] flex flex-col items-center justify-center overflow-hidden"
-    >
-      {/* --- THE ANIMATED GLASS AND LOADER --- */}
-      <div className="flex items-center gap-8 relative z-10 mb-12">
-        
-        {/* UPDATED: Image-Based Glass Container */}
-        <div className="relative w-20 h-fit md:w-24 md:h-40 flex items-end justify-center">
+    <div ref={containerRef} className="fixed inset-0 z-[9999] overflow-hidden bg-[#F5F3E9]">
+      
+      {/* --- LAYER 1: THE BASE --- */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="flex items-center gap-6 md:gap-10">
           
-
-          {/* Actual Glass Image (Sits on top in z-10) */}
-          <img 
-            src={glass} 
-            alt="Glass of water" 
-            className="absolute inset-0 w-full h-full object-contain z-10 drop-shadow-sm"
-          />
+          {/* Glass Image with individual ref for bounce */}
+          <div ref={glassRef}>
+            <img src={glass} alt="Glass" className="w-24 md:w-32 object-contain" />
+          </div>
+          
+          {/* Loading Group */}
+          <div ref={loadingGroupRef} className="flex flex-col items-start">
+            <div className="flex items-baseline gap-1">
+              <span 
+                ref={counterRef} 
+                className="font-clash font-semibold text-6xl md:text-8xl text-[#35AB57] tabular-nums tracking-tighter"
+              >
+                0
+              </span>
+              <span className="font-clash font-semibold text-4xl md:text-5xl text-[#35AB57]">%</span>
+            </div>
+            
+            <div className="relative">
+              <span className="font-clash text-2xl md:text-3xl text-[#1A1A1A] font-medium">
+                Loading
+              </span>
+              {/* The dynamic sub-bar under 'Loading' */}
+              <div className="h-[4px] bg-[#35AB57] mt-1 w-8 rounded-full" />
+            </div>
+          </div>
         </div>
 
-        {/* Loading Text Stack */}
-        <div className="flex flex-col items-start min-w-35">
-          <span className="font-clash font-semibold text-5xl md:text-6xl text-[#35AB57] tabular-nums tracking-tight">
-            {progress}%
-          </span>
-          <span className="font-clash text-2xl md:text-3xl text-[#1A1A1A] font-medium">
-            Loading
-          </span>
+        {/* Question Pill */}
+        <div className="absolute bottom-16 md:bottom-24 px-8 py-3 rounded-full border border-[#1A1A1A]/10 bg-white/40 text-[#1A1A1A] font-manrope font-medium text-sm md:text-base">
+          Have you drank water today ? 👀
         </div>
       </div>
 
-      {/* --- THE GREEN SWEEPING CURTAIN --- */}
+      {/* --- LAYER 2: THE GREEN CURTAIN --- */}
       <div 
-        ref={greenSweepRef}
-        className="absolute inset-0 w-full h-full bg-[#35AB57] z-50 flex items-center justify-center"
+        ref={greenLayerRef} 
+        className="absolute inset-0 w-full h-full bg-[#35AB57] z-20 flex items-center justify-center"
       >
-        <h2 
-          ref={textRef}
-          className="font-clash text-[#F5F3E9] text-5xl md:text-7xl font-medium tracking-tight"
-        >
+        <h2 ref={textRef} className="font-clash text-[#F5F3E9] text-5xl md:text-8xl font-medium tracking-tight">
           Drink water!
         </h2>
       </div>
+
     </div>
   );
 }

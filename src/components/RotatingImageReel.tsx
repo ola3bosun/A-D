@@ -31,6 +31,10 @@ export default function AprokoHero() {
   const leftImagesRef = useRef<(HTMLImageElement | null)[]>([]);
   const rightImagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
+  // 1. CRITICAL FIX: Clear the ref arrays on every render to prevent infinite memory leaks
+  leftImagesRef.current = [];
+  rightImagesRef.current = [];
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       
@@ -54,11 +58,9 @@ export default function AprokoHero() {
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top", 
-        // FIX 1: Dramatically reduced the pin duration so it unpins much faster, eliminating the "laggy" feel
-        end: "+=30%", 
+        end: "+=50%", 
         pin: true,
         onUpdate: (self) => {
-          // Absolute value ensures velocity only speeds up, never reverses
           const velocity = Math.abs(self.getVelocity()); 
 
           let targetTimeScale = 1 + (velocity / 200); 
@@ -96,13 +98,12 @@ export default function AprokoHero() {
           const imgCenterY = rect.top + rect.height / 2;
           
           const ratio = (imgCenterY - centerY) / centerY; 
-          
           const sineEase = Math.sin(ratio * (Math.PI / 2)); 
           
           const xOffset = (ratio * ratio * curveIntensity); 
           const rotation = -(sineEase * maxRotation);
           
-          gsap.set(img, { x: xOffset, rotation: rotation });
+          gsap.set(img, { x: xOffset, rotation: rotation, scale: 1.02 });
         });
 
         rightImagesRef.current.forEach((img) => {
@@ -116,7 +117,7 @@ export default function AprokoHero() {
           const xOffset = -(ratio * ratio * curveIntensity); 
           const rotation = (sineEase * maxRotation); 
           
-          gsap.set(img, { x: xOffset, rotation: rotation });
+          gsap.set(img, { x: xOffset, rotation: rotation, scale: 1.02 });
         });
       };
 
@@ -131,14 +132,15 @@ export default function AprokoHero() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-svh w-full max-w-[100vw] bg-[#FAFAF8] overflow-hidden flex items-center justify-center">
+    <section ref={sectionRef} className="relative h-[100svh] w-full max-w-[100vw] bg-[#FAFAF8] overflow-hidden flex items-center justify-center">
       
       {/* LEFT TRACK */}
-      <div className="absolute left-0 top-0 w-[18%] max-w-50 flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
+      {/* 2. FIX: Standardized max-w-[200px] instead of max-w-50 */}
+      <div className="absolute left-0 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
         {leftTrackImages.map((src, i) => (
           <img 
             key={`left-${i}`} 
-            ref={(el) => { leftImagesRef.current[i] = el; }}
+            ref={(el) => { leftImagesRef.current.push(el); }}
             src={src} 
             alt="Aproko snippet" 
             className="w-full rounded-2xl object-cover shadow-lg origin-center will-change-transform" 
@@ -170,8 +172,8 @@ export default function AprokoHero() {
           Scroll !
         </span>
 
-        <div className='bg-linear-to-b from-[#FFFFFF00] to-[#F5F3E9] absolute bottom-0 left-0 w-full h-17.5'> 
-        </div>
+        {/* 3. DESIGN TWEAK: Matched the 'to' color to the background color #FAFAF8 so it fades seamlessly */}
+        <div className='bg-gradient-to-b from-transparent to-[#FAFAF8]/70 absolute bottom-0 left-0 w-full h-24'></div>
 
       </div>
 
@@ -180,7 +182,7 @@ export default function AprokoHero() {
         {rightTrackImages.map((src, i) => (
            <img 
              key={`right-${i}`} 
-             ref={(el) => { rightImagesRef.current[i] = el; }}
+             ref={(el) => { rightImagesRef.current.push(el); }}
              src={src} 
              alt="Aproko snippet" 
              className="w-full rounded-2xl object-cover shadow-lg origin-center will-change-transform" 

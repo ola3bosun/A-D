@@ -61,7 +61,7 @@
 }
 
 ::selection {
-    background: #ededed;
+  background: #ededed;
 }
 
 /* for marquee in impact section */
@@ -70,3 +70,10 @@
   -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
+.preloader-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
