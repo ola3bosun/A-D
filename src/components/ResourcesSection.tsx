@@ -6,7 +6,7 @@ interface ResourcesSectionProps {
   subtitle: string;
   videos: VideoItem[];
   viewMoreHref?: string;
-  theme?: 'default' | 'white' | 'green'; // Kept so App.tsx doesn't throw an error
+  theme?: 'default' | 'white' | 'green'; 
 }
 
 export default function ResourcesSection({ 
@@ -27,7 +27,7 @@ export default function ResourcesSection({
   return (
     <section 
       ref={sectionRef} 
-      className={`w-full h-[100svh] ${bgColor} flex flex-col justify-center overflow-hidden relative transition-colors duration-500`}
+      className={`w-full h-[100svh] ${bgColor} flex flex-col justify-center overflow-hidden relative transition-colors duration-500 `}
     >
       {/* --- Section Header --- */}
       <div className="w-full px-6 md:px-12 flex flex-col gap-2 shrink-0 z-10 pt-12 md:pt-0">

@@ -45,7 +45,7 @@ export default function RotatingStats({ stats }: RotatingStatsProps) {
   }, [stats]); 
 
   return (
-    <div ref={containerRef} className="w-full relative h-[150px] md:h-[220px] flex justify-center">
+    <div ref={containerRef} className="w-full relative h-[150px] md:h-[220px] flex justify-center ">
       {stats.map((stat, i) => (
         <div 
           key={i}

@@ -132,7 +132,7 @@ export default function AprokoHero() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-[100svh] w-full max-w-[100vw] bg-[#FAFAF8] overflow-hidden flex items-center justify-center">
+    <section ref={sectionRef} className="sticky top-0 h-[100svh] w-full bg-[#F5F3E9A3] overflow-hidden flex items-center justify-center z-0">
       
       {/* LEFT TRACK */}
       {/* 2. FIX: Standardized max-w-[200px] instead of max-w-50 */}
