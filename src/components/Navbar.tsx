@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticLink from "./MagneticLink";
+import AprokoLogo from "../assets/images/Dev assets/aproko logo.png";
 
 gsap.registerPlugin(ScrollTrigger);
-
 
 // MAIN NAVBAR COMPONENT
 export default function AprokoNavbar() {
@@ -17,10 +17,9 @@ export default function AprokoNavbar() {
 
   useEffect(() => {
     let ctx = gsap.context(() => {
-      // ENTRANCE SEQUENCE (Runs once on mount)
+      // ENTRANCE SEQUENCE
       const tl = gsap.timeline();
 
-      // Start the pill collapsed and invisible
       gsap.set(pillRef.current, { scaleX: 0.8, opacity: 0 });
       gsap.set(".nav-item", { y: 20, opacity: 0 });
 
@@ -29,39 +28,36 @@ export default function AprokoNavbar() {
         opacity: 1,
         duration: 1,
         ease: "expo.out",
-        delay: 0.5, // Wait a beat before secondary to loading animation
+        delay: 0.5,
       }).to(
         ".nav-item",
         {
           y: 0,
           opacity: 1,
           duration: 0.6,
-          stagger: 0.15, // Domino effect for the links
+          stagger: 0.15,
           ease: "back.out(1.5)",
         },
-        "-=0.6",
-      ); 
+        "-=0.6"
+      );
 
-      // B. SMART SCROLL (Hide on scroll down, show on up)
+      // SMART SCROLL
       const showNav = gsap
         .fromTo(
           navContainerRef.current,
           { yPercent: -150 },
-          { yPercent: 0, paused: true, duration: 0.4, ease: "power3.out" },
+          { yPercent: 0, paused: true, duration: 0.4, ease: "power3.out" }
         )
-        .progress(1); // Start fully visible
+        .progress(1);
 
       ScrollTrigger.create({
         start: "top top",
         end: "max",
         onUpdate: (self) => {
-          // If scrolling DOWN and past 50px, reverse the animation (hide)
           if (self.direction === 1 && self.scroll() > 50) {
             showNav.reverse();
-            setIsDropdownOpen(false); // Close dropdown if scrolling down
-          }
-          // If scrolling UP, play the animation (show)
-          else if (self.direction === -1) {
+            setIsDropdownOpen(false);
+          } else if (self.direction === -1) {
             showNav.play();
           }
         },
@@ -71,13 +67,12 @@ export default function AprokoNavbar() {
     return () => ctx.revert();
   }, []);
 
-  // DROPDOWN CHOREOGRAPHY (Runs when state changes)
+  // DROPDOWN CHOREOGRAPHY
   useEffect(() => {
     let ctx = gsap.context(() => {
       if (!dropdownRef.current || !chevronRef.current) return;
 
       if (isDropdownOpen) {
-        // Open Sequence
         gsap.to(dropdownRef.current, {
           height: "auto",
           opacity: 1,
@@ -99,10 +94,9 @@ export default function AprokoNavbar() {
             stagger: 0.05,
             ease: "power2.out",
             delay: 0.1,
-          },
+          }
         );
       } else {
-        // Close Sequence
         gsap.to(".dropdown-item", {
           y: -10,
           opacity: 0,
@@ -128,33 +122,35 @@ export default function AprokoNavbar() {
   }, [isDropdownOpen]);
 
   return (
-    // Fixed container sits above everything
     <div
       ref={navContainerRef}
       className="fixed top-6 left-0 w-full z-50 flex justify-center px-4 will-change-transform"
     >
-      {/* The Floating Pill Background */}
       <div
         ref={pillRef}
-        className="relative flex items-center justify-between w-fit max-w-6xl bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-11.8"
+        className="relative flex items-center justify-between w-fit max-w-6xl bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-xl"
       >
-        {/* Logo */}
-        <div className="nav-item flex items-center justify-center bg-[#0A0A0A] rounded-[5.28px] h-full mr-4">
-         <span className="text-white font-clash font-medium text-[20px] leading-[150%] tracking-wide  transition-transform duration-300 hover:scale-105 px-3 py-2">
-            APROKO
-          </span>
+        {/* Fixed Logo Badge (104x54) */}
+        <div className="nav-item flex items-center justify-center bg-[#0A0A0A] rounded-[8px] w-[104px] h-[54px] mr-4 shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-pointer p-3 overflow-hidden">
+          <img
+            src={AprokoLogo}
+            alt="Aproko Logo"
+            className="w-full h-full object-contain select-none scale-550"
+          />
         </div>
 
         {/* Center Links */}
-        <div className="hidden md:flex items-center gap-5 font-clash-clash-medium text-[#000000BF]">
-          <MagneticLink 
-          className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
-          href="#">
+        <div className="hidden md:flex items-center gap-5 text-[#000000BF]">
+          <MagneticLink
+            className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
+            href="#"
+          >
             About
           </MagneticLink>
-          <MagneticLink 
-          className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
-          href="#">
+          <MagneticLink
+            className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
+            href="#"
+          >
             Events
           </MagneticLink>
 
@@ -164,12 +160,13 @@ export default function AprokoNavbar() {
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            {/* The Magnetic Link */}
-            <MagneticLink className="font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]" href="#">
+            <MagneticLink
+              className="font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
+              href="#"
+            >
               Resources
             </MagneticLink>
 
-            {/* The Chevron */}
             <svg
               ref={chevronRef}
               className="w-4 h-4 mt-0.5 text-gray-600 group-hover:text-green-600 transition-colors"
@@ -185,29 +182,27 @@ export default function AprokoNavbar() {
               />
             </svg>
 
-            {/* Dropdown Menu - position absolute pushes it down, but the parent padding bridges the gap */}
+            {/* Dropdown Menu */}
             <div
               ref={dropdownRef}
-              className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 bg-white rounded-xl shadow-[0_10px_40px_rgb(0,0,0,0.1)] overflow-hidden h-0 opacity-0 border border-gray-100" // Adjusted mt-6 to mt-4
+              className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 bg-white rounded-xl shadow-[0_10px_40px_rgb(0,0,0,0.1)] overflow-hidden h-0 opacity-0 border border-gray-100"
             >
               <div className="p-2 flex flex-col pointer-events-auto">
-                {" "}
-                {/* Added pointer-events to ensure clicks register */}
                 <a
                   href="#"
-                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-clash-clash-medium transition-colors"
+                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-medium transition-colors"
                 >
                   Health Articles
                 </a>
                 <a
                   href="#"
-                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-clash-clash-medium transition-colors"
+                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-medium transition-colors"
                 >
                   Video Guides
                 </a>
                 <a
                   href="#"
-                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-clash-clash-medium transition-colors"
+                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-medium transition-colors"
                 >
                   Podcasts
                 </a>
@@ -215,19 +210,22 @@ export default function AprokoNavbar() {
             </div>
           </div>
 
-          <MagneticLink 
-          className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
-          href="#">
+          <MagneticLink
+            className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
+            href="#"
+          >
             Contact
           </MagneticLink>
-          <MagneticLink className="nav-item text-[#D09F00] font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]" href="#">
+          <MagneticLink
+            className="nav-item text-[#D09F00] font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
+            href="#"
+          >
             EN
           </MagneticLink>
         </div>
 
         {/* CTA Button */}
         <div className="nav-item">
-          {/* Added a subtle scale effect on hover via Tailwind */}
           <button className="ml-8 bg-[#0A0A0A] text-white px-6 py-3 font-clash font-medium text-[20px] leading-[150%] tracking-wide shadow-md transition-transform duration-300 hover:scale-105 rounded-lg">
             Discover awadoc
           </button>
