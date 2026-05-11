@@ -15,6 +15,7 @@ export default function AprokoNavbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const chevronRef = useRef<SVGSVGElement>(null);
 
+  // 1. ENTRANCE & SCROLL CHOREOGRAPHY
   useEffect(() => {
     let ctx = gsap.context(() => {
       // ENTRANCE SEQUENCE
@@ -54,9 +55,9 @@ export default function AprokoNavbar() {
         start: "top top",
         end: "max",
         onUpdate: (self) => {
-          if (self.direction === 1 && self.scroll() > 50) {
+          if (self.direction === 1 && self.scroll() > 500) {
             showNav.reverse();
-            setIsDropdownOpen(false);
+            setIsDropdownOpen(false); // close dropdown on scroll down
           } else if (self.direction === -1) {
             showNav.play();
           }
@@ -67,12 +68,13 @@ export default function AprokoNavbar() {
     return () => ctx.revert();
   }, []);
 
-  // DROPDOWN CHOREOGRAPHY
+  // 2. MEGA MENU CHOREOGRAPHY
   useEffect(() => {
     let ctx = gsap.context(() => {
       if (!dropdownRef.current || !chevronRef.current) return;
 
       if (isDropdownOpen) {
+        // Open Sequence
         gsap.to(dropdownRef.current, {
           height: "auto",
           opacity: 1,
@@ -97,6 +99,7 @@ export default function AprokoNavbar() {
           }
         );
       } else {
+        // Close Sequence
         gsap.to(".dropdown-item", {
           y: -10,
           opacity: 0,
@@ -130,7 +133,7 @@ export default function AprokoNavbar() {
         ref={pillRef}
         className="relative flex items-center justify-between w-fit max-w-6xl bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-xl"
       >
-        {/* Fixed Logo Badge (104x54) */}
+        {/* LOGO BADGE (Fixed 104x54) */}
         <div className="nav-item flex items-center justify-center bg-[#0A0A0A] rounded-[8px] w-[104px] h-[54px] mr-4 shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-pointer p-3 overflow-hidden">
           <img
             src={AprokoLogo}
@@ -139,7 +142,7 @@ export default function AprokoNavbar() {
           />
         </div>
 
-        {/* Center Links */}
+        {/* CENTER LINKS */}
         <div className="hidden md:flex items-center gap-5 text-[#000000BF]">
           <MagneticLink
             className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
@@ -154,7 +157,7 @@ export default function AprokoNavbar() {
             Events
           </MagneticLink>
 
-          {/* Dropdown Trigger */}
+          {/* DROPDOWN TRIGGER WRAPPER */}
           <div
             className="nav-item relative flex items-center gap-1 group pb-4 -mb-4"
             onMouseEnter={() => setIsDropdownOpen(true)}
@@ -169,46 +172,78 @@ export default function AprokoNavbar() {
 
             <svg
               ref={chevronRef}
-              className="w-4 h-4 mt-0.5 text-gray-600 group-hover:text-green-600 transition-colors"
+              className="w-4 h-4 mt-0.5 text-gray-600 group-hover:text-[#35AB57] transition-colors"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
 
-            {/* Dropdown Menu */}
+            {/* THE MEGA MENU */}
             <div
               ref={dropdownRef}
-              className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 bg-white rounded-xl shadow-[0_10px_40px_rgb(0,0,0,0.1)] overflow-hidden h-0 opacity-0 border border-gray-100"
+              className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[560px] bg-white rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] overflow-hidden h-0 opacity-0 border border-gray-100"
             >
-              <div className="p-2 flex flex-col pointer-events-auto">
-                <a
-                  href="#"
-                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-medium transition-colors"
-                >
-                  Health Articles
-                </a>
-                <a
-                  href="#"
-                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-medium transition-colors"
-                >
-                  Video Guides
-                </a>
-                <a
-                  href="#"
-                  className="dropdown-item px-4 py-3 hover:bg-gray-50 hover:text-green-600 rounded-lg text-sm font-medium transition-colors"
-                >
-                  Podcasts
-                </a>
+              <div className="relative p-6 grid grid-cols-2 gap-8 pointer-events-auto">
+                
+                {/* Subtle Vertical Divider */}
+                <div className="absolute left-1/2 top-8 bottom-8 w-[1px] bg-gray-100 -translate-x-1/2"></div>
+
+                {/* COLUMN 1: Read */}
+                <div className="flex flex-col gap-1">
+                  <span className="font-manrope text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3 px-3">
+                    Read
+                  </span>
+                  
+                  {/* Notice the .dropdown-item class is back! */}
+                  <a href="#" className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5">
+                    <h4 className="font-clash font-medium text-[18px] text-[#1A1A1A] transition-colors duration-300 group-hover:text-[#35AB57]">
+                      Health Articles
+                    </h4>
+                    <p className="font-manrope text-sm text-gray-500 mt-1 leading-[1.4]">
+                      Clear, honest health gist without the big medical grammar.
+                    </p>
+                  </a>
+
+                  <a href="#" className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5">
+                    <h4 className="font-clash font-medium text-[18px] text-[#1A1A1A] transition-colors duration-300 group-hover:text-[#35AB57]">
+                      Medical Reports
+                    </h4>
+                    <p className="font-manrope text-sm text-gray-500 mt-1 leading-[1.4]">
+                      Deep dives into local health trends and statistics.
+                    </p>
+                  </a>
+                </div>
+
+                {/* COLUMN 2: Watch & Listen */}
+                <div className="flex flex-col gap-1">
+                  <span className="font-manrope text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3 px-3">
+                    Watch & Listen
+                  </span>
+                  
+                  <a href="#" className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5">
+                    <h4 className="font-clash font-medium text-[18px] text-[#1A1A1A] transition-colors duration-300 group-hover:text-[#35AB57]">
+                      Video Guides
+                    </h4>
+                    <p className="font-manrope text-sm text-gray-500 mt-1 leading-[1.4]">
+                      Visual breakdowns of conditions and healthy habits.
+                    </p>
+                  </a>
+
+                  <a href="#" className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5">
+                    <h4 className="font-clash font-medium text-[18px] text-[#1A1A1A] transition-colors duration-300 group-hover:text-[#35AB57]">
+                      Unclog Podcast
+                    </h4>
+                    <p className="font-manrope text-sm text-gray-500 mt-1 leading-[1.4]">
+                      Real conversations and interviews with medical experts.
+                    </p>
+                  </a>
+                </div>
+
               </div>
             </div>
-          </div>
+          </div> 
 
           <MagneticLink
             className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
@@ -224,7 +259,7 @@ export default function AprokoNavbar() {
           </MagneticLink>
         </div>
 
-        {/* CTA Button */}
+        {/* CTA BUTTON */}
         <div className="nav-item">
           <button className="ml-8 bg-[#0A0A0A] text-white px-6 py-3 font-clash font-medium text-[20px] leading-[150%] tracking-wide shadow-md transition-transform duration-300 hover:scale-105 rounded-lg">
             Discover awadoc
