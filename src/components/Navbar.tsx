@@ -39,7 +39,7 @@ export default function AprokoNavbar() {
           stagger: 0.15,
           ease: "back.out(1.5)",
         },
-        "-=0.6"
+        "-=0.6",
       );
 
       // SMART SCROLL
@@ -47,7 +47,7 @@ export default function AprokoNavbar() {
         .fromTo(
           navContainerRef.current,
           { yPercent: -150 },
-          { yPercent: 0, paused: true, duration: 0.4, ease: "power3.out" }
+          { yPercent: 0, paused: true, duration: 0.4, ease: "power3.out" },
         )
         .progress(1);
 
@@ -55,7 +55,7 @@ export default function AprokoNavbar() {
         start: "top top",
         end: "max",
         onUpdate: (self) => {
-          if (self.direction === 1 && self.scroll() > 500) {
+          if (self.direction === 1 && self.scroll() > 50) {
             showNav.reverse();
             setIsDropdownOpen(false); // close dropdown on scroll down
           } else if (self.direction === -1) {
@@ -68,7 +68,7 @@ export default function AprokoNavbar() {
     return () => ctx.revert();
   }, []);
 
-  // 2. MEGA MENU CHOREOGRAPHY
+  // MEGA MENU CHOREOGRAPHY
   useEffect(() => {
     let ctx = gsap.context(() => {
       if (!dropdownRef.current || !chevronRef.current) return;
@@ -96,7 +96,7 @@ export default function AprokoNavbar() {
             stagger: 0.05,
             ease: "power2.out",
             delay: 0.1,
-          }
+          },
         );
       } else {
         // Close Sequence
@@ -159,9 +159,18 @@ export default function AprokoNavbar() {
 
           {/* DROPDOWN TRIGGER WRAPPER */}
           <div
-            className="nav-item relative flex items-center gap-1 group pb-4 -mb-4"
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
+            className="nav-item relative flex items-center gap-1 group pb-4 -mb-4 focus-within:ring-0"
+            // Make the div focusable so it can detect when the user clicks away
+            tabIndex={0}
+            // Toggle the state! If it's open, close it. If it's closed, open it.
+            onClick={() => setIsDropdownOpen((prev) => !prev)}
+            //  When focus leaves this div (user clicks anywhere else on the page), close it.
+            // The setTimeout(..., 0) ensures the click event on the actual link registers before the menu closes.
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget)) {
+                setTimeout(() => setIsDropdownOpen(false), 0);
+              }
+            }}
           >
             <MagneticLink
               className="font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
@@ -177,7 +186,12 @@ export default function AprokoNavbar() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
 
             {/* THE MEGA MENU */}
@@ -186,7 +200,6 @@ export default function AprokoNavbar() {
               className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[560px] bg-white rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] overflow-hidden h-0 opacity-0 border border-gray-100"
             >
               <div className="relative p-6 grid grid-cols-2 gap-8 pointer-events-auto">
-                
                 {/* Subtle Vertical Divider */}
                 <div className="absolute left-1/2 top-8 bottom-8 w-[1px] bg-gray-100 -translate-x-1/2"></div>
 
@@ -195,9 +208,11 @@ export default function AprokoNavbar() {
                   <span className="font-manrope text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3 px-3">
                     Read
                   </span>
-                  
-                  {/* Notice the .dropdown-item class is back! */}
-                  <a href="#" className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5">
+
+                  <a
+                    href="#"
+                    className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5"
+                  >
                     <h4 className="font-clash font-medium text-[18px] text-[#1A1A1A] transition-colors duration-300 group-hover:text-[#35AB57]">
                       Health Articles
                     </h4>
@@ -206,7 +221,10 @@ export default function AprokoNavbar() {
                     </p>
                   </a>
 
-                  <a href="#" className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5">
+                  <a
+                    href="#"
+                    className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5"
+                  >
                     <h4 className="font-clash font-medium text-[18px] text-[#1A1A1A] transition-colors duration-300 group-hover:text-[#35AB57]">
                       Medical Reports
                     </h4>
@@ -221,8 +239,11 @@ export default function AprokoNavbar() {
                   <span className="font-manrope text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3 px-3">
                     Watch & Listen
                   </span>
-                  
-                  <a href="#" className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5">
+
+                  <a
+                    href="#"
+                    className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5"
+                  >
                     <h4 className="font-clash font-medium text-[18px] text-[#1A1A1A] transition-colors duration-300 group-hover:text-[#35AB57]">
                       Video Guides
                     </h4>
@@ -231,7 +252,10 @@ export default function AprokoNavbar() {
                     </p>
                   </a>
 
-                  <a href="#" className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5">
+                  <a
+                    href="#"
+                    className="dropdown-item group flex flex-col p-3 rounded-xl transition-colors duration-300 hover:bg-[#35AB57]/5"
+                  >
                     <h4 className="font-clash font-medium text-[18px] text-[#1A1A1A] transition-colors duration-300 group-hover:text-[#35AB57]">
                       Unclog Podcast
                     </h4>
@@ -240,10 +264,9 @@ export default function AprokoNavbar() {
                     </p>
                   </a>
                 </div>
-
               </div>
             </div>
-          </div> 
+          </div>
 
           <MagneticLink
             className="nav-item font-clash font-medium text-[20px] leading-[150%] tracking-[-0.025em]"
