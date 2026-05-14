@@ -47,12 +47,12 @@ function App() {
   useEffect(() => {
     // 1. Initialize Lenis
     const lenis = new Lenis({
-      duration: 1.2, // Tweak this: lower is faster, higher is smoother/slower
+      duration: 1.8, //  lower is faster, higher is smoother/slower
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Standard ease-out
       touchMultiplier: 2, // Makes touch scrolling feel a bit more responsive
     });
 
-    // 2. TIE LENIS TO GSAP SCROLLTRIGGER (CRITICAL FOR PINNING)
+    // 2. TIE LENIS TO GSAP SCROLLTRIGGER
     lenis.on('scroll', ScrollTrigger.update);
 
     // 3. Sync Lenis's requestAnimationFrame with GSAP's ticker
@@ -60,7 +60,6 @@ function App() {
       lenis.raf(time * 1000);
     });
 
-    // 4. Disable GSAP's lag smoothing to prevent jittering on heavy scroll moments
     gsap.ticker.lagSmoothing(0);
 
     // 5. Cleanup on unmount
@@ -73,7 +72,7 @@ function App() {
   }, []);
   
   return (
-    // Fixed "relativ" typo here
+
     <div className="overflow-clip relative w-full">
       {!loadingComplete && (
         <Preloader 

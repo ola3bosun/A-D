@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Perfect icon matches for your design
 import { FaYoutube } from 'react-icons/fa';
 import { PiArmchairFill } from 'react-icons/pi';
 
@@ -10,7 +9,6 @@ import awadoc from '../assets/images/Dev assets/awadoc svg.svg';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// 1. FIX: Create a simple wrapper component for your custom SVG so it plays nice with React
 const AwadocIcon = (props: React.HTMLAttributes<HTMLImageElement>) => (
   <img src={awadoc} alt="Awadoc" {...props} />
 );
@@ -22,8 +20,8 @@ const capabilities = [
     iconColor: "text-[#FF0000]",
     title: "Health education through content",
     text: "Making complex medical topics simple enough to share with your mum. Through YouTube videos, reels, and social content, Aproko Doctor breaks down what your body is doing — and what you should actually do about it.",
-    // Updated key to videoSrc (make sure these point to your .mp4 files!)
-    videoSrc: "../assets/images/Dev assets/",
+    // Keeping the key as videoSrc, but it points to your image placeholders
+    videoSrc: "../assets/images/Dev assets/1 (1).jpg",
   },
   {
     id: 2,
@@ -31,23 +29,23 @@ const capabilities = [
     iconColor: "text-[#1A1A1A]", 
     title: "Global advocacy and speaking",
     text: "From Lagos to London, the message is the same: your health decisions deserve better information. Aproko Doctor takes that conversation to every stage, boardroom, and conference that matters.",
-    videoSrc: "../assets/images/Dev assets/1 (2).mp4",
+    videoSrc: "../assets/images/Dev assets/1 (2).jpg",
   },
   {
     id: 3,
-    icon: AwadocIcon, // Using our new wrapper component here
+    icon: AwadocIcon, 
     iconColor: "text-[#35AB57]", 
     title: "Health-tech innovation with awadoc",
     text: "Where healthcare meets the future. Awadoc is building the digital infrastructure that puts doctors and patients on the same page — cutting the guesswork out of getting well.",
-    videoSrc: "../assets/images/Dev assets/1 (3).mp4", 
+    videoSrc: "../assets/images/Dev assets/1 (3).jpg", 
   }
 ];
 
 export default function CapabilitiesSection() {
   const sectionRef = useRef<HTMLElement>(null);
   
-  // 2. FIX: Update the ref to expect HTMLVideoElement
-  const videosRef = useRef<(HTMLVideoElement | null)[]>([]);
+  // FIX: Updated the ref to expect HTMLImageElement
+  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
   const textBlocksRef = useRef<(HTMLDivElement | null)[]>([]);
   const iconsRef = useRef<(HTMLDivElement | null)[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -55,7 +53,7 @@ export default function CapabilitiesSection() {
   const charsRef = useRef<HTMLSpanElement[][]>([[], [], []]);
   
   // Reset arrays on render
-  videosRef.current = [];
+  imagesRef.current = [];
   textBlocksRef.current = [];
   iconsRef.current = [];
   charsRef.current = [[], [], []];
@@ -64,8 +62,8 @@ export default function CapabilitiesSection() {
     let ctx = gsap.context(() => {
       
       // SETUP INITIAL STATES
-      // Target videos instead of images
-      gsap.set(videosRef.current.slice(1), { yPercent: 100 });
+      // Target images instead of videos
+      gsap.set(imagesRef.current.slice(1), { yPercent: 100 });
       gsap.set(textBlocksRef.current.slice(1), { opacity: 0.25 });
       gsap.set(iconsRef.current.slice(1), { filter: 'grayscale(100%)' });
       gsap.set(buttonRef.current, { opacity: 0, y: 15 });
@@ -81,7 +79,7 @@ export default function CapabilitiesSection() {
         }
       });
 
-    capabilities.forEach((_, index) => {
+      capabilities.forEach((_, index) => {
         tl.to(charsRef.current[index], {
           color: '#1A1A1A',
           stagger: 0.2, 
@@ -94,8 +92,8 @@ export default function CapabilitiesSection() {
           tl.addLabel(`transition-${index}`)
             .to(textBlocksRef.current[index], { opacity: 0.25, duration: 2 }, `transition-${index}`)
             
-            // Slide UP the next video
-            .to(videosRef.current[nextIndex], { yPercent: 0, duration: 4, ease: "power2.inOut" }, `transition-${index}`)
+            // Slide UP the next image
+            .to(imagesRef.current[nextIndex], { yPercent: 0, duration: 4, ease: "power2.inOut" }, `transition-${index}`)
             
             .to(textBlocksRef.current[nextIndex], { opacity: 1, duration: 2 }, `transition-${index}`)
             .to(iconsRef.current[nextIndex], { filter: 'grayscale(0%)', duration: 2 }, `transition-${index}`);
@@ -113,20 +111,17 @@ export default function CapabilitiesSection() {
     <section ref={sectionRef} className="w-full h-[100svh] bg-[#F5F3E9] flex items-center overflow-hidden">
       <div className="max-w-[90rem] mx-auto px-6 md:px-12 w-full flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
         
-        {/* LEFT SIDE: The Video Stack */}
+        {/* LEFT SIDE: The Image Stack */}
         <div className="w-full lg:w-[45%] h-[40vh] lg:h-[75vh] relative rounded-[2rem] overflow-hidden shadow-xl bg-gray-200 shrink-0">
           {capabilities.map((item) => (
-            // 3. FIX: Changed to video tag with necessary background attributes
-            <video
+            // FIX: Changed to img tag and removed video attributes
+            <img
               key={item.id}
               ref={(el) => {
-                if (el) videosRef.current.push(el);
+                if (el) imagesRef.current.push(el);
               }}
               src={item.videoSrc}
-              autoPlay
-              muted
-              loop
-              playsInline // Crucial for iOS autoplay
+              alt={item.title}
               className="absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
             />
           ))}
