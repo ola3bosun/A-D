@@ -135,7 +135,6 @@ export default function AprokoHero() {
     <section ref={sectionRef} className="sticky top-0 h-[100svh] w-full bg-[#F5F3E9A3] overflow-hidden flex items-center justify-center z-0">
       
       {/* LEFT TRACK */}
-      {/* 2. FIX: Standardized max-w-[200px] instead of max-w-50 */}
       <div className="absolute left-0 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
         {leftTrackImages.map((src, i) => (
           <img 
@@ -150,20 +149,20 @@ export default function AprokoHero() {
 
       {/* CENTER CONTENT */}
       <div className="z-10 text-center flex flex-col items-center w-full max-w-2xl px-4">
-        <h1 className="font-clash text-[#373737] text-[60px] leading-[120%] tracking-[-0.025em] text-center">
+        <h1 className="font-clash text-[#373737] text-[60px] leading-[120%] tracking-[-0.025em] text-center font-medium">
           Your Doctor Friend Has Gist <span className="text-[60px]">👀</span>
         </h1>
-        <p className="font-mont font-normal italic text-[40px] text-[#35AB57] leading-[120%] text-center pb-[16px]">
+        <p className="font-mont font-normal italic text-[40px] text-[#35AB57] leading-[120%] text-center pb-[16px] font-semibold">
           — And It Could Save Your Life
         </p>
         <p className="text-[#474747] mb-8 text-lg font-manrope">
           Real health advice. No big grammar. No long queue. Just clear, honest information that keeps you and your people well.
         </p>
-        <div className="flex gap-4">
-           <button className="px-8 py-3 bg-[#35AB57] text-[#F5F3E9] rounded-lg font-medium hover:bg-green-600 transition-colors shadow-md font-clash-medium">
+        <div className="flex gap-4 font-clash">
+           <button className="px-8 py-3 bg-[#35AB57] text-[#F5F3E9] rounded-lg font-medium hover:bg-green-600 transition-colors shadow-md">
              Let's Talk Health
            </button>
-           <button className="px-8 py-3 bg-[#F5F3E9] border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors shadow-sm font-clash-medium">
+           <button className="px-8 py-3 bg-[#F5F3E9] border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors shadow-sm">
              Discover awadoc
            </button>
         </div>

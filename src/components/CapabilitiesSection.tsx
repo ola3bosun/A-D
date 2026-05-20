@@ -7,6 +7,11 @@ import { PiArmchairFill } from 'react-icons/pi';
 
 import awadoc from '../assets/images/Dev assets/awadoc svg.svg';
 
+// PLACEHOLDER IMAGES FOR THE VIDEO SLIDER
+import img1 from '../assets/images/Dev assets/1 (1).jpg';
+import img2 from '../assets/images/Dev assets/1 (2).jpg';
+import img3 from '../assets/images/Dev assets/1 (3).jpg';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const AwadocIcon = (props: React.HTMLAttributes<HTMLImageElement>) => (
@@ -21,7 +26,7 @@ const capabilities = [
     title: "Health education through content",
     text: "Making complex medical topics simple enough to share with your mum. Through YouTube videos, reels, and social content, Aproko Doctor breaks down what your body is doing — and what you should actually do about it.",
     // Keeping the key as videoSrc, but it points to your image placeholders
-    videoSrc: "../assets/images/Dev assets/1 (1).jpg",
+    videoSrc: {img1}
   },
   {
     id: 2,
@@ -29,7 +34,7 @@ const capabilities = [
     iconColor: "text-[#1A1A1A]", 
     title: "Global advocacy and speaking",
     text: "From Lagos to London, the message is the same: your health decisions deserve better information. Aproko Doctor takes that conversation to every stage, boardroom, and conference that matters.",
-    videoSrc: "../assets/images/Dev assets/1 (2).jpg",
+    videoSrc: {img2}
   },
   {
     id: 3,
@@ -37,7 +42,7 @@ const capabilities = [
     iconColor: "text-[#35AB57]", 
     title: "Health-tech innovation with awadoc",
     text: "Where healthcare meets the future. Awadoc is building the digital infrastructure that puts doctors and patients on the same page — cutting the guesswork out of getting well.",
-    videoSrc: "../assets/images/Dev assets/1 (3).jpg", 
+    videoSrc: {img3} 
   }
 ];
 

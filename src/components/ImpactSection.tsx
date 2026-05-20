@@ -93,7 +93,7 @@ export default function ImpactSection() {
                 <img 
                   src={logo.src} 
                   alt={logo.name} 
-                  className="h-full w-auto object-contain" 
+                  className="h-full min-w-3.5 object-contain" 
                   loading="lazy" 
                 />
               </div>
