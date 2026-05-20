@@ -8,7 +8,7 @@ import { PiArmchairFill } from 'react-icons/pi';
 import awadoc from '../assets/images/Dev assets/awadoc svg.svg';
 
 // PLACEHOLDER IMAGES FOR THE VIDEO SLIDER
-import img1 from '../assets/images/Dev assets/1 (1).jpg';
+import img1 from '../assets/images/Dev assets/1 (4).jpg';
 import img2 from '../assets/images/Dev assets/1 (2).jpg';
 import img3 from '../assets/images/Dev assets/1 (3).jpg';
 
@@ -25,8 +25,7 @@ const capabilities = [
     iconColor: "text-[#FF0000]",
     title: "Health education through content",
     text: "Making complex medical topics simple enough to share with your mum. Through YouTube videos, reels, and social content, Aproko Doctor breaks down what your body is doing — and what you should actually do about it.",
-    // Keeping the key as videoSrc, but it points to your image placeholders
-    videoSrc: {img1}
+    videoSrc: img1
   },
   {
     id: 2,
@@ -34,7 +33,7 @@ const capabilities = [
     iconColor: "text-[#1A1A1A]", 
     title: "Global advocacy and speaking",
     text: "From Lagos to London, the message is the same: your health decisions deserve better information. Aproko Doctor takes that conversation to every stage, boardroom, and conference that matters.",
-    videoSrc: {img2}
+    videoSrc: img2
   },
   {
     id: 3,
@@ -42,14 +41,13 @@ const capabilities = [
     iconColor: "text-[#35AB57]", 
     title: "Health-tech innovation with awadoc",
     text: "Where healthcare meets the future. Awadoc is building the digital infrastructure that puts doctors and patients on the same page — cutting the guesswork out of getting well.",
-    videoSrc: {img3} 
+    videoSrc: img3 
   }
 ];
 
 export default function CapabilitiesSection() {
   const sectionRef = useRef<HTMLElement>(null);
   
-  // FIX: Updated the ref to expect HTMLImageElement
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
   const textBlocksRef = useRef<(HTMLDivElement | null)[]>([]);
   const iconsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -67,7 +65,6 @@ export default function CapabilitiesSection() {
     let ctx = gsap.context(() => {
       
       // SETUP INITIAL STATES
-      // Target images instead of videos
       gsap.set(imagesRef.current.slice(1), { yPercent: 100 });
       gsap.set(textBlocksRef.current.slice(1), { opacity: 0.25 });
       gsap.set(iconsRef.current.slice(1), { filter: 'grayscale(100%)' });
@@ -85,27 +82,38 @@ export default function CapabilitiesSection() {
       });
 
       capabilities.forEach((_, index) => {
+        const label = `section-${index}`;
+        tl.addLabel(label);
+
+        // FIX: Add an explicit duration to the character fill so layout transitions drop smoothly
         tl.to(charsRef.current[index], {
           color: '#1A1A1A',
-          stagger: 0.2, 
+          stagger: 0.1, 
           ease: "none",
-        });
+          duration: 4 // Creates a predictable timeline budget per block
+        }, label);
 
         if (index < capabilities.length - 1) {
           const nextIndex = index + 1;
+          const transitionLabel = `transition-${index}`;
           
-          tl.addLabel(`transition-${index}`)
-            .to(textBlocksRef.current[index], { opacity: 0.25, duration: 2 }, `transition-${index}`)
+          // Trigger layout shifts exactly at the back half of the current block text fill
+          tl.addLabel(transitionLabel, `-=1.5`)
+            .to(textBlocksRef.current[index], { opacity: 0.25, duration: 2 }, transitionLabel)
             
-            // Slide UP the next image
-            .to(imagesRef.current[nextIndex], { yPercent: 0, duration: 4, ease: "power2.inOut" }, `transition-${index}`)
+            // Slide UP the next image beautifully
+            .to(imagesRef.current[nextIndex], { 
+              yPercent: 0, 
+              duration: 3, 
+              ease: "power2.inOut" 
+            }, transitionLabel)
             
-            .to(textBlocksRef.current[nextIndex], { opacity: 1, duration: 2 }, `transition-${index}`)
-            .to(iconsRef.current[nextIndex], { filter: 'grayscale(0%)', duration: 2 }, `transition-${index}`);
+            .to(textBlocksRef.current[nextIndex], { opacity: 1, duration: 2 }, transitionLabel)
+            .to(iconsRef.current[nextIndex], { filter: 'grayscale(0%)', duration: 2 }, transitionLabel);
         }
       });
 
-      tl.to(buttonRef.current, { opacity: 1, y: 0, duration: 2 });
+      tl.to(buttonRef.current, { opacity: 1, y: 0, duration: 1.5 });
 
     }, sectionRef);
 
@@ -119,7 +127,6 @@ export default function CapabilitiesSection() {
         {/* LEFT SIDE: The Image Stack */}
         <div className="w-full lg:w-[45%] h-[40vh] lg:h-[75vh] relative rounded-[2rem] overflow-hidden shadow-xl bg-gray-200 shrink-0">
           {capabilities.map((item) => (
-            // FIX: Changed to img tag and removed video attributes
             <img
               key={item.id}
               ref={(el) => {
@@ -142,13 +149,13 @@ export default function CapabilitiesSection() {
                 ref={(el) => {
                   if (el) textBlocksRef.current.push(el);
                 }} 
-                className="flex gap-4 md:gap-6 mb-8 md:mb-10 last:mb-8"
+                className="flex gap-4 md:gap-6 mb-8 md:mb-10 last:mb-8 transition-opacity duration-300"
               >
                 <div 
                   ref={(el) => {
                     if (el) iconsRef.current.push(el);
                   }}
-                  className="shrink-0 mt-1"
+                  className="shrink-0 mt-1 transition-all duration-300"
                 >
                   <Icon className={`w-6 h-6 md:w-8 md:h-8 ${item.iconColor}`} />
                 </div>
@@ -160,14 +167,14 @@ export default function CapabilitiesSection() {
                   
                   <p className="font-manrope text-sm md:text-base leading-relaxed text-[#1A1A1A] max-w-lg">
                     {item.text.split(" ").map((word, wIndex) => (
-                      <span key={wIndex} className="inline-block mr-[0.25em]">
+                      <span key={wIndex} className="inline-block mr-[0.25em] whitespace-nowrap">
                         {word.split("").map((char, cIndex) => (
                           <span 
                             key={cIndex}
                             ref={(el) => {
                               if (el) charsRef.current[bIndex].push(el);
                             }}
-                            className="text-[#47474780]" 
+                            className="text-[#47474740] will-change-colors transition-colors duration-150" 
                           >
                             {char}
                           </span>
@@ -183,7 +190,7 @@ export default function CapabilitiesSection() {
           <div className="ml-10 md:ml-14 mt-4">
             <button 
               ref={buttonRef}
-              className="px-6 py-3 border border-gray-300 rounded-lg font-manrope font-semibold text-[#1A1A1A] hover:bg-gray-100 transition-colors shadow-sm bg-transparent"
+              className="px-6 py-3 border border-gray-300 rounded-lg font-manrope font-semibold text-[#1A1A1A] hover:bg-gray-100 transition-all duration-300 shadow-sm bg-transparent"
             >
               Let's Talk Health
             </button>

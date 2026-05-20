@@ -13,13 +13,8 @@ import img8 from '../assets/images/Dev assets/1 (8).jpg';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// THE CONVEYOR BELT ARRAYS
 const sequence = [img1, img2, img3, img4, img5, img6, img7, img8];
-
-// Left Track (Moves UP): Standard order
 const leftTrackImages = [...sequence, ...sequence];
-
-// Right Track (Moves DOWN): Reversed order to simulate the back of the belt
 const reversedSequence = [...sequence].reverse();
 const rightTrackImages = [...reversedSequence, ...reversedSequence];
 
@@ -31,14 +26,11 @@ export default function AprokoHero() {
   const leftImagesRef = useRef<(HTMLImageElement | null)[]>([]);
   const rightImagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
-  // 1. CRITICAL FIX: Clear the ref arrays on every render to prevent infinite memory leaks
   leftImagesRef.current = [];
   rightImagesRef.current = [];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      
-      // THE MASTER TIMELINE
       const wheelTl = gsap.timeline({ repeat: -1 });
 
       wheelTl.to(leftTrackRef.current, {
@@ -52,17 +44,14 @@ export default function AprokoHero() {
         { yPercent: 0, ease: "none", duration: 20 },
       0); 
 
-      // VELOCITY SPEED CONTROL 
       let scrollTimeout: ReturnType<typeof setTimeout>;
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top", 
         end: "+=50%", 
-        pin: true,
         onUpdate: (self) => {
           const velocity = Math.abs(self.getVelocity()); 
-
           let targetTimeScale = 1 + (velocity / 200); 
           targetTimeScale = gsap.utils.clamp(1, 6, targetTimeScale);
 
@@ -84,11 +73,9 @@ export default function AprokoHero() {
         }
       });
 
-      // THE CURVE PHYSICS ENGINE (MATH.SIN)
       const updateCurves = () => {
         const windowHeight = window.innerHeight;
         const centerY = windowHeight / 2;
-        
         const curveIntensity = 15; 
         const maxRotation = 9.5; 
 
@@ -96,10 +83,8 @@ export default function AprokoHero() {
           if (!img) return;
           const rect = img.getBoundingClientRect();
           const imgCenterY = rect.top + rect.height / 2;
-          
           const ratio = (imgCenterY - centerY) / centerY; 
           const sineEase = Math.sin(ratio * (Math.PI / 2)); 
-          
           const xOffset = (ratio * ratio * curveIntensity); 
           const rotation = -(sineEase * maxRotation);
           
@@ -110,10 +95,8 @@ export default function AprokoHero() {
           if (!img) return;
           const rect = img.getBoundingClientRect();
           const imgCenterY = rect.top + rect.height / 2;
-          
           const ratio = (imgCenterY - centerY) / centerY; 
           const sineEase = Math.sin(ratio * (Math.PI / 2));
-          
           const xOffset = -(ratio * ratio * curveIntensity); 
           const rotation = (sineEase * maxRotation); 
           
@@ -135,7 +118,7 @@ export default function AprokoHero() {
     <section ref={sectionRef} className="sticky top-0 h-[100svh] w-full bg-[#F5F3E9A3] overflow-hidden flex items-center justify-center z-0">
       
       {/* LEFT TRACK */}
-      <div className="absolute left-0 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
+      <div className="absolute left-0 top-0 w-[16%] xl:w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={leftTrackRef}>
         {leftTrackImages.map((src, i) => (
           <img 
             key={`left-${i}`} 
@@ -148,36 +131,45 @@ export default function AprokoHero() {
       </div>
 
       {/* CENTER CONTENT */}
-      <div className="z-10 text-center flex flex-col items-center w-full max-w-2xl px-4">
-        <h1 className="font-clash text-[#373737] text-[60px] leading-[120%] tracking-[-0.025em] text-center font-medium">
-          Your Doctor Friend Has Gist <span className="text-[60px]">👀</span>
+      {/* FIX 1: Widened container to max-w-4xl and added a custom layout safety width (w-[64vw])
+         to guarantee the text block scales inward before hitting the side columns.
+      */}
+      <div className="z-10 text-center flex flex-col items-center w-[64vw] max-w-4xl px-4 select-none">
+        {/* FIX 2: Implemented Fluid Typography via Tailwind arbitrary values.
+           text-[clamp(36px,4vw,60px)] calculates a font scale that stays fluidly responsive
+           between 36px and 60px depending on layout widths. Added whitespace-nowrap safely.
+        */}
+        <h1 className="font-clash text-[#373737] text-[clamp(36px,4.2vw,60px)] leading-[115%] tracking-[-0.03em] text-center font-medium whitespace-nowrap">
+          Your Doctor Friend Has Gist <span className="text-[1.05em]">👀</span>
         </h1>
-        <p className="font-mont font-normal italic text-[40px] text-[#35AB57] leading-[120%] text-center pb-[16px] font-semibold">
+        
+        {/* FIX 3: Balanced fluid type scale for subtitle matching layout hierarchy */}
+        <p className="font-mont font-normal italic text-[clamp(24px,2.8vw,40px)] text-[#35AB57] leading-[120%] text-center pb-4 mt-2 font-semibold whitespace-nowrap">
           — And It Could Save Your Life
         </p>
-        <p className="text-[#474747] mb-8 text-lg font-manrope">
+
+        <p className="text-[#474747] mb-8 text-sm md:text-base lg:text-lg font-manrope max-w-xl leading-relaxed">
           Real health advice. No big grammar. No long queue. Just clear, honest information that keeps you and your people well.
         </p>
+
         <div className="flex gap-4 font-clash">
-           <button className="px-8 py-3 bg-[#35AB57] text-[#F5F3E9] rounded-lg font-medium hover:bg-green-600 transition-colors shadow-md">
+           <button className="px-6 md:px-8 py-3 bg-[#35AB57] text-[#F5F3E9] rounded-lg font-medium hover:bg-green-600 transition-colors shadow-md text-sm md:text-base">
              Let's Talk Health
            </button>
-           <button className="px-8 py-3 bg-[#F5F3E9] border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors shadow-sm">
+           <button className="px-6 md:px-8 py-3 bg-[#F5F3E9] border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors shadow-sm text-sm md:text-base">
              Discover awadoc
            </button>
         </div>
 
-        <span className="font-clash font-normal text-[24px] leading-relaxed mt-15 absolute bottom-15 left-1/2 transform -translate-x-1/2">
+        <span className="font-clash font-normal text-[20px] md:text-[24px] leading-relaxed absolute bottom-12 left-1/2 transform -translate-x-1/2">
           Scroll !
         </span>
 
-        {/* 3. DESIGN TWEAK: Matched the 'to' color to the background color #FAFAF8 so it fades seamlessly */}
-        <div className='bg-gradient-to-b from-transparent to-[#FAFAF8]/70 absolute bottom-0 left-0 w-full h-24'></div>
-
+        <div className='bg-gradient-to-b from-transparent to-[#FAFAF8]/70 absolute bottom-0 left-0 w-full h-24 pointer-events-none'></div>
       </div>
 
       {/* RIGHT TRACK */}
-      <div className="absolute right-0 top-0 w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={rightTrackRef}>
+      <div className="absolute right-0 top-0 w-[16%] xl:w-[18%] max-w-[200px] flex flex-col gap-6 pb-6 opacity-90" ref={rightTrackRef}>
         {rightTrackImages.map((src, i) => (
            <img 
              key={`right-${i}`} 
