@@ -285,7 +285,7 @@ export default function AprokoFooter() {
 
         <h1
           ref={bigTextRef}
-          className="absolute bottom-[-25%] left-[-5%] w-full text-center font-clash text-[#808080] leading-none tracking-[-0.04em] select-none z-10 whitespace-nowrap"
+          className="absolute bottom-[-25%] left-[-5%] w-full text-center font-clash text-[#8A9EA7] leading-none tracking-[-0.04em] select-none z-10 whitespace-nowrap"
           style={{ fontSize: "clamp(6rem, 24vw, 32rem)" }}
         >
           drink water
