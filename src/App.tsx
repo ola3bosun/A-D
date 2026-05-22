@@ -18,34 +18,34 @@ import CapabilitiesSection from "./components/CapabilitiesSection";
 import bbl from "./assets/images/Dev assets/bbl.jpg";
 import lossFat from "./assets/images/Dev assets/loss fat HD.jpg";
 import hairline from "./assets/images/Dev assets/hairline.jpg";
-import conversations from "./assets/images/Dev assets/Conversations_That_Matter_with_Aproko_Doctor__Dr_Chinonso_E.gif";
+import heat from "./assets/images/Dev assets/heat damage to brain.jpg";
 import fibroids from "./assets/images/Dev assets/fibroids.jpg";
 import unclogPcos from "./assets/images/Dev assets/unclog pcos.jpg";
 import unclogAdhd from "./assets/images/Dev assets/unclog adhd.jpg";
 import unclogPregnancy from "./assets/images/Dev assets/Pregnancy unclog.jpg";
 import unclogpee from "./assets/images/Dev assets/unclog pee.jpg";
-import unclogHeat from "./assets/images/Dev assets/heat damage to brain.jpg";
+import unclog2 from "./assets/images/Dev assets/unclog 2.jpg";
 
 
 
 gsap.registerPlugin(ScrollTrigger);
 
-const imagesToPreload = [bbl, lossFat, hairline, conversations, fibroids, unclogPcos, unclogAdhd];
+const imagesToPreload = [bbl, lossFat, hairline, heat, fibroids, unclogPcos, unclogAdhd];
 
 const latestVideos = [
-  { id: 1, thumbnail: conversations, title: "Conversations that matter", timeAgo: "3 weeks ago", href: "#" },
+  { id: 1, thumbnail: heat, title: "At Kano, you won't believe what I saw", timeAgo: "2 days ago", href: "#" },
   { id: 2, thumbnail: bbl, title: "What they don't tell you about BBL!", timeAgo: "11 days ago", href: "#" },
-  { id: 3, thumbnail: lossFat, title: "How to lose belly fat", timeAgo: "11 days ago", href: "#" },
-  { id: 4, thumbnail: hairline, title: "How grow your hairline faster", timeAgo: "2 weeks ago", href: "#" },
-  { id: 5, thumbnail: fibroids, title: "Fibroids : What You Need to Know", timeAgo: "1 month ago", href: "#" },
+  { id: 3, thumbnail: lossFat, title: "How to lose belly fat", timeAgo: "4 months ago", href: "#" },
+  { id: 4, thumbnail: hairline, title: "How grow your hairline faster", timeAgo: "6 months ago", href: "#" },
+  { id: 5, thumbnail: fibroids, title: "This is what causes fibroids!", timeAgo: "2 months ago", href: "#" },
 ];
 
 const podcastVideos = [
   { id: 1, thumbnail: unclogPcos, title: "I almost ended it all because of PCOS", cardSubtitle: "Unclog", timeAgo: "11 days ago", href: "#" },
-  { id: 2, thumbnail: unclogHeat, title: "Heat Damage to the Brain", cardSubtitle: "Unclog", timeAgo: "11 days ago", href: "#" },
-  { id: 3, thumbnail: unclogpee, title: "Side-effects of urine retention", cardSubtitle: "Unclog", timeAgo: "2 weeks ago", href: "#" },
-  { id: 4, thumbnail: unclogPregnancy, title: "The Dark Side of Pregnancy", cardSubtitle: "Unclog", timeAgo: "3 weeks ago", href: "#" },
-  { id: 5, thumbnail: unclogAdhd, title: "ADHD and me: The struggle is real", cardSubtitle: "Unclog", timeAgo: "1 month ago", href: "#" },
+  { id: 2, thumbnail: unclog2, title: "Vaginismus: How we finally did \"IT\"", cardSubtitle: "Unclog", timeAgo: "11 days ago", href: "#" },
+  { id: 3, thumbnail: unclogpee, title: "She died from holding her pee ", cardSubtitle: "Unclog", timeAgo: "2 weeks ago", href: "#" },
+  { id: 4, thumbnail: unclogPregnancy, title: "Pregnancy is determined from the quality of the man's sperm", cardSubtitle: "Unclog", timeAgo: "3 weeks ago", href: "#" },
+  { id: 5, thumbnail: unclogAdhd, title: "How ADHD affected M.I adn Eniola's marriage", cardSubtitle: "Unclog", timeAgo: "1 month ago", href: "#" },
 ];
 
 function App() {

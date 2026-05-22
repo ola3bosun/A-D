@@ -265,7 +265,8 @@ export default function AprokoFooter() {
           <p className="text-[#4D4D4D] text-manrope tracking-wide text-sm">
             Made with Grit by{" "}
             <a
-              href="#"
+              href="https://the-nuanced-studio.vercel.app"
+              target="_blank"
               className="text-[#30BF5A] hover:text-[#30BF5A]/80 transition-colors text-clash font-medium"
             >
               the nuanced studio
@@ -285,7 +286,7 @@ export default function AprokoFooter() {
 
         <h1
           ref={bigTextRef}
-          className="absolute bottom-[-25%] left-[-5%] w-full text-center font-clash text-[#8A9EA7] leading-none tracking-[-0.04em] select-none z-10 whitespace-nowrap"
+          className="absolute bottom-[-25%] left-[-5%] w-full text-center font-clash text-[#212121]/75 leading-none tracking-[-0.04em] select-none z-10 whitespace-nowrap"
           style={{ fontSize: "clamp(6rem, 24vw, 32rem)" }}
         >
           drink water
