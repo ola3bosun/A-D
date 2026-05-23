@@ -7,10 +7,10 @@ import { PiArmchairFill } from 'react-icons/pi';
 
 import awadoc from '../assets/images/Dev assets/awadoc svg.svg';
 
-// PLACEHOLDER IMAGES FOR THE VIDEO SLIDER
-import img1 from '../assets/images/Dev assets/1 (4).jpg';
-import img2 from '../assets/images/Dev assets/1 (2).jpg';
-import img3 from '../assets/images/Dev assets/1 (3).jpg';
+// MEDIA ASSETS
+import vid1 from '../assets/images/Dev assets/1st gif part youtube content .webm';
+import vid2 from '../assets/images/Dev assets/Conversations_That_Matter_with_Aproko_Doctor__Dr_Chinonso_E.gif';
+import vid3 from '../assets/images/Dev assets/3rd gif part awadoc content .webm';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +25,8 @@ const capabilities = [
     iconColor: "text-[#FF0000]",
     title: "Health education through content",
     text: "Making complex medical topics simple enough to share with your mum. Through YouTube videos, reels, and social content, Aproko Doctor breaks down what your body is doing — and what you should actually do about it.",
-    videoSrc: img1
+    type: 'video', // Rendered as <video>
+    videoSrc: vid1
   },
   {
     id: 2,
@@ -33,7 +34,8 @@ const capabilities = [
     iconColor: "text-[#1A1A1A]", 
     title: "Global advocacy and speaking",
     text: "From Lagos to London, the message is the same: your health decisions deserve better information. Aproko Doctor takes that conversation to every stage, boardroom, and conference that matters.",
-    videoSrc: img2
+    type: 'image', // FIX 1: Flipped to image context to handle the .gif file correctly
+    videoSrc: vid2
   },
   {
     id: 3,
@@ -41,22 +43,24 @@ const capabilities = [
     iconColor: "text-[#35AB57]", 
     title: "Health-tech innovation with awadoc",
     text: "Where healthcare meets the future. Awadoc is building the digital infrastructure that puts doctors and patients on the same page — cutting the guesswork out of getting well.",
-    videoSrc: img3 
+    type: 'video', // Rendered as <video>
+    videoSrc: vid3 
   }
 ];
 
 export default function CapabilitiesSection() {
   const sectionRef = useRef<HTMLElement>(null);
   
-  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+  // FIX 2: Upgraded Ref definitions to allow handling both media types cleanly
+  const mediaElementsRef = useRef<(HTMLVideoElement | HTMLImageElement | null)[]>([]);
   const textBlocksRef = useRef<(HTMLDivElement | null)[]>([]);
   const iconsRef = useRef<(HTMLDivElement | null)[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
   
   const charsRef = useRef<HTMLSpanElement[][]>([[], [], []]);
   
-  // Reset arrays on render
-  imagesRef.current = [];
+  // Clean allocations on every render pass
+  mediaElementsRef.current = [];
   textBlocksRef.current = [];
   iconsRef.current = [];
   charsRef.current = [[], [], []];
@@ -65,7 +69,7 @@ export default function CapabilitiesSection() {
     let ctx = gsap.context(() => {
       
       // SETUP INITIAL STATES
-      gsap.set(imagesRef.current.slice(1), { yPercent: 100 });
+      gsap.set(mediaElementsRef.current.slice(1), { yPercent: 100 });
       gsap.set(textBlocksRef.current.slice(1), { opacity: 0.25 });
       gsap.set(iconsRef.current.slice(1), { filter: 'grayscale(100%)' });
       gsap.set(buttonRef.current, { opacity: 0, y: 15 });
@@ -85,24 +89,22 @@ export default function CapabilitiesSection() {
         const label = `section-${index}`;
         tl.addLabel(label);
 
-        // FIX: Add an explicit duration to the character fill so layout transitions drop smoothly
         tl.to(charsRef.current[index], {
           color: '#1A1A1A',
           stagger: 0.1, 
           ease: "none",
-          duration: 4 // Creates a predictable timeline budget per block
+          duration: 4 
         }, label);
 
         if (index < capabilities.length - 1) {
           const nextIndex = index + 1;
           const transitionLabel = `transition-${index}`;
           
-          // Trigger layout shifts exactly at the back half of the current block text fill
           tl.addLabel(transitionLabel, `-=1.5`)
             .to(textBlocksRef.current[index], { opacity: 0.25, duration: 2 }, transitionLabel)
             
-            // Slide UP the next image beautifully
-            .to(imagesRef.current[nextIndex], { 
+            // Slide UP the target active element layer seamlessly
+            .to(mediaElementsRef.current[nextIndex], { 
               yPercent: 0, 
               duration: 3, 
               ease: "power2.inOut" 
@@ -124,19 +126,40 @@ export default function CapabilitiesSection() {
     <section ref={sectionRef} className="w-full h-[100svh] bg-[#F5F3E9] flex items-center overflow-hidden">
       <div className="max-w-[90rem] mx-auto px-6 md:px-12 w-full flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
         
-        {/* LEFT SIDE: The Image Stack */}
+        {/* LEFT SIDE: Dynamic Asset Stack */}
         <div className="w-full lg:w-[45%] h-[40vh] lg:h-[75vh] relative rounded-[2rem] overflow-hidden shadow-xl bg-gray-200 shrink-0">
-          {capabilities.map((item) => (
-            <img
-              key={item.id}
-              ref={(el) => {
-                if (el) imagesRef.current.push(el);
-              }}
-              src={item.videoSrc}
-              alt={item.title}
-              className="absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
-            />
-          ))}
+          {capabilities.map((item, index) => {
+            const isVideo = item.type === "video";
+            
+            // FIX 3: Dynamic reference allocations to maintain absolute ordering index arrays
+            const setRef = (el: HTMLVideoElement | HTMLImageElement | null) => {
+              if (el) mediaElementsRef.current[index] = el;
+            };
+
+            return isVideo ? (
+              <video
+                key={item.id}
+                ref={setRef}
+                src={item.videoSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                style={{ zIndex: capabilities.length - index }}
+                className="absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
+              />
+            ) : (
+              <img
+                key={item.id}
+                ref={setRef}
+                src={item.videoSrc}
+                alt={item.title}
+                style={{ zIndex: capabilities.length - index }}
+                className="absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
+              />
+            );
+          })}
         </div>
 
         {/* RIGHT SIDE: The Text Timeline */}
@@ -146,15 +169,11 @@ export default function CapabilitiesSection() {
             return (
               <div 
                 key={item.id} 
-                ref={(el) => {
-                  if (el) textBlocksRef.current.push(el);
-                }} 
+                ref={(el) => { if (el) textBlocksRef.current[bIndex] = el; }} 
                 className="flex gap-4 md:gap-6 mb-8 md:mb-10 last:mb-8 transition-opacity duration-300"
               >
                 <div 
-                  ref={(el) => {
-                    if (el) iconsRef.current.push(el);
-                  }}
+                  ref={(el) => { if (el) iconsRef.current[bIndex] = el; }}
                   className="shrink-0 mt-1 transition-all duration-300"
                 >
                   <Icon className={`w-6 h-6 md:w-8 md:h-8 ${item.iconColor}`} />
