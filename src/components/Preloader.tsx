@@ -148,16 +148,10 @@ export default function Preloader({ imageUrls, onComplete }: PreloaderProps) {
               <span className="font-clash text-2xl md:text-3xl text-[#1A1A1A] font-medium">
                 Loading
               </span>
-              {/* The dynamic sub-bar under 'Loading' */}
-              <div className="h-[4px] bg-[#35AB57] mt-1 w-8 rounded-full" />
             </div>
           </div>
         </div>
 
-        {/* Question Pill */}
-        <div className="absolute bottom-16 md:bottom-24 px-8 py-3 rounded-full border border-[#1A1A1A]/10 bg-white/40 text-[#1A1A1A] font-manrope font-medium text-sm md:text-base">
-          Have you drank water today ? 👀
-        </div>
       </div>
 
       {/* --- LAYER 2: THE GREEN CURTAIN --- */}
