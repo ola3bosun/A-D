@@ -176,7 +176,7 @@ export default function AprokoHero() {
           — And It Could Save Your Life
         </p>
 
-        <p className="text-[#474747] mb-8 text-sm md:text-base lg:text-lg font-manrope max-w-xl leading-relaxed tracking-tight">
+        <p className="text-[#474747] mb-8 text-sm md:text-base lg:text-lg font-manrope max-w-xl leading-relaxed tracking-[-3.5%]">
           Real health advice. No big grammar. No long queue. Just clear, honest
           information that keeps you and your people well.
         </p>

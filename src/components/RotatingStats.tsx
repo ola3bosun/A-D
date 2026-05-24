@@ -55,7 +55,7 @@ export default function RotatingStats({ stats }: RotatingStatsProps) {
           // Stacked absolutely, starting completely transparent
           className="absolute inset-0 flex flex-col items-center justify-end opacity-0 pointer-events-none"
         >
-          <h1 className="font-clash font-bold text-[80px] md:text-[140px] leading-[0.85] tracking-tighter text-[#1A1A1A] mb-4">
+          <h1 className="font-clash font-bold text-[50px] md:text-[140px] leading-[0.85] tracking-tighter text-[#1A1A1A] mb-4">
             {stat.number}
           </h1>
           <p className="font-manrope font-medium text-xl md:text-2xl text-[#35AB57]">

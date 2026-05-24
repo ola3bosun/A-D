@@ -92,6 +92,7 @@ export default function VideoCarousel({ videos, sectionRef }: VideoCarouselProps
 
           return (
             <a 
+              data-cursor-text="Play"
               key={video.id} 
               href={video.href}
               className={`group flex flex-col shrink-0 w-[85vw] md:w-[35vw] max-w-[480px] cursor-pointer rounded-[2rem] overflow-hidden ${cardBg} shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100/50 transition-all duration-300 hover:-translate-y-4 hover:shadow-2xl ${hoverClasses}`}

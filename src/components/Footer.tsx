@@ -189,7 +189,7 @@ export default function AprokoFooter() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className={`text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-1.5 ${link.underline ? "underline decoration-gray-500 underline-offset-4" : ""}`}
+                    className={`text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-3 ${link.underline ? "underline decoration-gray-500 underline-offset-4" : ""}`}
                   >
                     {link.name}
                   </a>
@@ -207,7 +207,7 @@ export default function AprokoFooter() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-1.5"
+                    className="text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-3"
                   >
                     {link.name}
                   </a>
@@ -225,7 +225,7 @@ export default function AprokoFooter() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-1.5"
+                    className="text-gray-400 hover:text-white inline-block transform transition-all duration-300 hover:translate-x-3"
                   >
                     {link.name}
                   </a>
@@ -248,9 +248,9 @@ export default function AprokoFooter() {
                       className="text-[#A2A2A2] hover:text-white transition-colors duration-300 flex items-center gap-3 group"
                     >
                       <Icon
-                        className={`w-5 h-5 text-[#A2A2A2] transition-all duration-300 ease-out group-hover:scale-110 ${link.hoverColor}`}
+                        className={`w-5 h-5 text-[#A2A2A2] transition-all duration-300 ease-out  ${link.hoverColor}`}
                       />
-                      <span className="transition-transform duration-300 ease-out group-hover:translate-x-1.5">
+                      <span className="transition-transform duration-300 ease-out group-hover:translate-x-3">
                         {link.name}
                       </span>
                     </a>

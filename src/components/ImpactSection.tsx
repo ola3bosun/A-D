@@ -118,8 +118,8 @@ export default function ImpactSection() {
           <p className="text-[#8E8E8E] text-sm font-medium mb-4 tracking-wide font-manrope">
             Impact
           </p>
-          <h2 className="font-clash font-medium text-[48px] md:text-[64px] leading-[1.05] tracking-[-0.04em] text-[#212121]">
-            Reaching <span className="text-[#35AB57]">millions</span> across Africa <br className="hidden md:block" />and beyond
+          <h2 className="font-clash font-medium text-[48px] md:text-[48px] leading-[1.05] tracking-[-0.04em] text-[#212121]">
+            Reaching <span className="text-[#35AB57]">millions</span> across Africa and<br className="hidden md:block" /> beyond
           </h2>
         </div>
 

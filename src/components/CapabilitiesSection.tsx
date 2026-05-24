@@ -129,8 +129,11 @@ export default function CapabilitiesSection() {
     <section ref={sectionRef} className="w-full h-[100svh] bg-[#F5F3E9] flex items-center overflow-hidden">
       <div className="max-w-[90rem] mx-auto px-6 md:px-12 w-full flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
         
-        {/* LEFT SIDE: Dynamic Asset Stack */}
-        <div className="w-full lg:w-[45%] h-[40vh] lg:h-[75vh] relative rounded-[2rem] overflow-hidden shadow-xl bg-gray-200 shrink-0">
+       {/* LEFT SIDE: Dynamic Asset Stack */}
+        <div 
+          data-cursor-text="Play"
+          className="w-full lg:w-[45%] h-[40vh] lg:h-[75vh] relative rounded-[2rem] overflow-hidden shadow-xl bg-gray-200 shrink-0"
+        >
           {capabilities.map((item, index) => {
             const isVideo = item.type === "video";
 
@@ -143,8 +146,8 @@ export default function CapabilitiesSection() {
                 loop
                 playsInline
                 preload="auto"
-                style={{ zIndex: capabilities.length - index }}
-                // The 'media-layer' class connects it to the timeline
+                // FIXED: Now z-index increases (1, 2, 3), allowing next videos to stack ON TOP
+                style={{ zIndex: index + 1 }} 
                 className="media-layer absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
               />
             ) : (
@@ -152,8 +155,8 @@ export default function CapabilitiesSection() {
                 key={item.id}
                 src={item.videoSrc}
                 alt={item.title}
-                style={{ zIndex: capabilities.length - index }}
-                // The 'media-layer' class connects it to the timeline
+                // FIXED: Matches the video z-index logic
+                style={{ zIndex: index + 1 }} 
                 className="media-layer absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
               />
             );
