@@ -76,9 +76,9 @@ const MobilePitchView = () => (
       </p>
     </div>
 
-    <div className="mt-5 opacity-20 text-[10px] uppercase">
-      <span> X : @bynuanced </span> <br />
-      <span> IG : @thenuancedstudio </span>
+    <div className="mt-5 opacity-15 text-[12px] uppercase font-bold">
+      <span> <a href="https://x.com/bynuanced?s=20"> X : @bynuanced</a> </span> <br />
+      <span> <a href="https://www.instagram.com/thenuancedstudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">IG : @thenuancedstudio</a> </span>
     </div>
     <div className="mt-10 opacity-20 text-[10px] uppercase tracking-tighter">
       © 2026 The Nuanced Studio
@@ -99,7 +99,7 @@ function App() {
     checkScreen();
     window.addEventListener("resize", checkScreen);
 
-    // Only run Lenis/GSAP if we are on desktop
+    // Only run Lenis/GSAP if on desktop
     if (window.innerWidth > 1024) {
       const lenis = new Lenis({
         duration: 1.8,
