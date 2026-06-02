@@ -52,27 +52,27 @@ const MobilePitchView = () => (
   <div className="flex flex-col items-center justify-center min-h-screen bg-[#0a0a0a] text-white p-10 text-center font-clash">
     {/* Minimalist Logo Placeholder */}
     <div className="mb-12 opacity-50 tracking-[0.2em] text-xs uppercase font-[">
-      <span className="text-[#7FFF00]">The Nuanced Studio </span> x Aproko Doctor
+      <span className="text-[#DFFF00]">The Nuanced Studio </span> x Aproko Doctor
     </div>
 
     <div className="max-w-xs">
-      <h1 className="text-4xl font-light mb-6 tracking-tight leading-tight">
+      <h1 className="text-4xl font-light mb-5 tracking-tight leading-tight">
         APROKO DOCTOR
       </h1>
       
-      <div className="h-px w-12 bg-[#7FFF00] mx-auto mb-8"></div>
+      <div className="h-px w-12 bg-[#DFFF00] mx-auto mb-8"></div>
 
       {/* Status Badge */}
       <div className="inline-flex items-center gap-2 px-4 py-2 border border-zinc-800 rounded-full mb-12">
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#50d71e] opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#50d71e]"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DFFF00] opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#DFFF00]"></span>
         </span>
         <span className="text-[10px] uppercase tracking-widest text-zinc-500">Mobile Build in Progress...</span>
       </div>
 
       <p className="text-xs text-zinc-500 leading-relaxed">
-        For the full interactive pitch, animations, and cinematic experience, please view this link on a <span className="text-white">Desktop browser.</span>
+        While you wait, remember to <span className="text-white"> take a glass of water </span> and view this link on a <span className="text-white">Desktop browser.</span>
       </p>
     </div>
 
