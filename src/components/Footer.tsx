@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import glass from "../assets/images/Dev assets/w glass of water.png";
-
+import AprokoLogo from "../assets/images/Dev assets/aproko logo.png";
 import {
   FaFacebook,
   FaInstagram,
@@ -161,10 +161,14 @@ export default function AprokoFooter() {
       <div className="w-full mx-auto px-6 md:px-12 shrink-0 z-20 relative">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-8 md:mb-12">
           <div className="md:col-span-4 footer-col pr-0 md:pr-12">
-            <div className="bg-[#0A0A0A] inline-flex items-center justify-center px-4 py-3 rounded-xl h-14 mb-8 border border-gray-800 shadow-lg">
-              <span className="font-bold text-[#f4f4f4] text-sm tracking-wide flex items-center gap-2">
-                <span className="text-[#30BF5A]">✚</span> APROKO DOCTOR GLOBAL
-              </span>
+            <div className="bg-[#000000] inline-flex items-center justify-center px-4 py-3 rounded-xl h-14 mb-8 border border-gray-800 shadow-lg">
+              <div className="nav-item flex items-center justify-center bg-[#000000] rounded-[8px] w-[104px] h-[54px] mr-4 shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-pointer p-3 overflow-hidden">
+                <img
+                  src={AprokoLogo}
+                  alt="Aproko Logo"
+                  className="w-full h-full object-contain select-none scale-600"
+                />
+              </div>
             </div>
             <p className="text-manrope text-[1.1rem] leading-relaxed mb-10 max-w-sm tracking-wide text-gray-300">
               Real health advice. No big grammar. No long queue. Just clear,
@@ -286,8 +290,8 @@ export default function AprokoFooter() {
 
         <h1
           ref={bigTextRef}
-          className="absolute bottom-[-25%] left-[-5%] w-full text-center font-clash text-[#212121]/75 leading-none tracking-[-0.04em] select-none z-10 whitespace-nowrap"
-          style={{ fontSize: "clamp(6rem, 24vw, 32rem)" }}
+          className="absolute bottom-[-25%] left-[-7.5%] w-full text-center font-clash text-[#212121]/75 leading-none tracking-[-0.04em] select-none z-10 whitespace-nowrap"
+          style={{ fontSize: "clamp(7rem, 24vw, 33rem)" }}
         >
           drink water
         </h1>

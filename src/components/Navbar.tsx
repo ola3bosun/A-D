@@ -133,7 +133,6 @@ export default function AprokoNavbar() {
         ref={pillRef}
         className="relative flex items-center justify-between w-fit max-w-6xl bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-xl"
       >
-        {/* LOGO BADGE (Fixed 104x54) */}
         <div className="nav-item flex items-center justify-center bg-[#0A0A0A] rounded-[8px] w-[104px] h-[54px] mr-4 shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-pointer p-3 overflow-hidden">
           <img
             src={AprokoLogo}
@@ -160,12 +159,8 @@ export default function AprokoNavbar() {
           {/* DROPDOWN TRIGGER WRAPPER */}
           <div
             className="nav-item relative flex items-center gap-1 group pb-4 -mb-4 focus-within:ring-0"
-            // Make the div focusable so it can detect when the user clicks away
             tabIndex={0}
-            // Toggle the state! If it's open, close it. If it's closed, open it.
             onClick={() => setIsDropdownOpen((prev) => !prev)}
-            //  When focus leaves this div (user clicks anywhere else on the page), close it.
-            // The setTimeout(..., 0) ensures the click event on the actual link registers before the menu closes.
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget)) {
                 setTimeout(() => setIsDropdownOpen(false), 0);
@@ -284,7 +279,7 @@ export default function AprokoNavbar() {
 
         {/* CTA BUTTON */}
         <div className="nav-item">
-          <button className="ml-8 bg-[#0A0A0A] text-white px-6 py-3 font-clash font-medium text-[20px] leading-[150%] tracking-wide shadow-md transition-transform duration-300 hover:scale-105 rounded-lg">
+          <button className="ml-8 bg-[#0A0A0A] text-white px-3 py-3 font-clash font-medium text-[16px] leading-[150%] tracking-wide shadow-md transition-transform duration-300 hover:scale-105 rounded-lg">
             Discover awadoc
           </button>
         </div>

@@ -64,7 +64,7 @@ function App() {
 
     // 3. Sync Lenis's requestAnimationFrame with GSAP's ticker
     gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
+      lenis.raf(time * 850);
     });
 
     gsap.ticker.lagSmoothing(0);
