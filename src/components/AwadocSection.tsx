@@ -68,7 +68,7 @@ export default function AwadocSection() {
         </svg>
       </div>
 
-      <div className="max-w-[90rem] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
+      <div className="max-w-360 mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
         
         {/* --- LEFT SIDE: Content & Reveal Animations --- */}
         <div ref={textContainerRef} className="flex-1 w-full max-w-2xl">
