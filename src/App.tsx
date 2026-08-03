@@ -48,57 +48,48 @@ const podcastVideos = [
 ];
 
 // --- MOBILE ---
-const MobilePitchView = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen bg-[#0a0a0a] text-white p-10 text-center font-clash">
-    {/* Minimalist Logo Placeholder */}
-    <div className="mb-12 opacity-50 tracking-[0.2em] text-xs uppercase font-[">
-      <span className="text-[#DFFF00]">The Nuanced Studio </span> x Aproko Doctor
-    </div>
+// const MobilePitchView = () => (
+//   <div className="flex flex-col items-center justify-center min-h-screen bg-[#0a0a0a] text-white p-10 text-center font-clash">
+//     {/* Minimalist Logo Placeholder */}
+//     <div className="mb-12 opacity-50 tracking-[0.2em] text-xs uppercase font-[">
+//       <span className="text-[#DFFF00]">The Nuanced Studio </span> x Aproko Doctor
+//     </div>
 
-    <div className="max-w-xs">
-      <h1 className="text-4xl font-light mb-5 tracking-tight leading-tight">
-        APROKO DOCTOR
-      </h1>
-      
-      <div className="h-px w-12 bg-[#DFFF00] mx-auto mb-8"></div>
+//     <div className="max-w-xs">
+//       <h1 className="text-4xl font-light mb-5 tracking-tight leading-tight">
+//         APROKO DOCTOR
+//       </h1>
 
-      {/* Status Badge */}
-      <div className="inline-flex items-center gap-2 px-4 py-2 border border-zinc-800 rounded-full mb-12">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DFFF00] opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#DFFF00]"></span>
-        </span>
-        <span className="text-[10px] uppercase tracking-widest text-zinc-500">Mobile Build in Progress...</span>
-      </div>
+//       <div className="h-px w-12 bg-[#DFFF00] mx-auto mb-8"></div>
 
-      <p className="text-xs text-zinc-500 leading-relaxed">
-        While you wait, remember to <span className="text-white"> take a glass of water </span> and view this link on a <span className="text-white">Desktop browser.</span>
-      </p>
-    </div>
+//       {/* Status Badge */}
+//       <div className="inline-flex items-center gap-2 px-4 py-2 border border-zinc-800 rounded-full mb-12">
+//         <span className="relative flex h-2 w-2">
+//           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DFFF00] opacity-75"></span>
+//           <span className="relative inline-flex rounded-full h-2 w-2 bg-[#DFFF00]"></span>
+//         </span>
+//         <span className="text-[10px] uppercase tracking-widest text-zinc-500">Mobile Build in Progress...</span>
+//       </div>
 
-    <div className="mt-5 opacity-15 text-[12px] uppercase font-bold">
-      <span> <a href="https://x.com/bynuanced?s=20"> X : @bynuanced</a> </span> <br />
-      <span> <a href="https://www.instagram.com/thenuancedstudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">IG : @thenuancedstudio</a> </span>
-    </div>
-    <div className="mt-10 opacity-20 text-[10px] uppercase tracking-tighter">
-      © 2026 The Nuanced Studio
-    </div>
-  </div>
-);
+//       <p className="text-xs text-zinc-500 leading-relaxed">
+//         While you wait, remember to <span className="text-white"> take a glass of water </span> and view this link on a <span className="text-white">Desktop browser.</span>
+//       </p>
+//     </div>
+
+//     <div className="mt-5 opacity-15 text-[12px] uppercase font-bold">
+//       <span> <a href="https://x.com/bynuanced?s=20"> X : @bynuanced</a> </span> <br />
+//       <span> <a href="https://www.instagram.com/thenuancedstudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">IG : @thenuancedstudio</a> </span>
+//     </div>
+//     <div className="mt-10 opacity-20 text-[10px] uppercase tracking-tighter">
+//       © 2026 The Nuanced Studio
+//     </div>
+//   </div>
+// );
 
 function App() {
   const [loadingComplete, setLoadingComplete] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(true);
 
   useEffect(() => {
-    // Screen check logic
-    const checkScreen = () => {
-      setIsDesktop(window.innerWidth > 1024);
-    };
-
-    checkScreen();
-    window.addEventListener("resize", checkScreen);
-
     // Only run Lenis/GSAP if on desktop
     if (window.innerWidth > 1024) {
       const lenis = new Lenis({
@@ -108,35 +99,32 @@ function App() {
       });
 
       lenis.on('scroll', ScrollTrigger.update);
-      
+
       const tickerCallback = (time: number) => {
         lenis.raf(time * 850);
       };
-      
+
       gsap.ticker.add(tickerCallback);
       gsap.ticker.lagSmoothing(0);
 
       return () => {
         lenis.destroy();
         gsap.ticker.remove(tickerCallback);
-        window.removeEventListener("resize", checkScreen);
       };
     }
-
-    return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
   // --- CONDITIONAL RETURN ---
-  if (!isDesktop) {
-    return <MobilePitchView />;
-  }
+  // if (!isDesktop) {
+  //   return <MobilePitchView />;
+  // }
 
   return (
     <div className="overflow-clip relative w-full">
       {!loadingComplete && (
-        <Preloader 
-          imageUrls={imagesToPreload} 
-          onComplete={() => setLoadingComplete(true)} 
+        <Preloader
+          imageUrls={imagesToPreload}
+          onComplete={() => setLoadingComplete(true)}
         />
       )}
       <Navbar />
@@ -145,21 +133,21 @@ function App() {
       <ImpactSection />
       <CapabilitiesSection />
       <AwadocSection />
-      
-      <ResourcesSection 
+
+      <ResourcesSection
         subtitle="Resources"
         title={"Watch My Latest\nand Popular Videos"}
         videos={latestVideos}
         viewMoreHref="/resources"
       />
-      
-      <ResourcesSection 
+
+      <ResourcesSection
         subtitle="Resources"
         title={"Catch me on\npodcasts"}
         videos={podcastVideos}
-        theme="green" 
+        theme="green"
       />
-      
+
       <Testimonialsv2 />
       <Footer />
     </div>

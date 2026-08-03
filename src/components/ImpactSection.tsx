@@ -114,17 +114,17 @@ export default function ImpactSection() {
 
       <div className="p-8 w-full mx-auto">
         
-        <div className="max-w-[55vw] md:mb-12">
+        <div className="w-full lg:max-w-[55vw] mb-8 md:mb-12">
           <p className="text-[#8E8E8E] text-sm font-medium mb-4 tracking-wide font-manrope">
             Impact
           </p>
-          <h2 className="font-clash font-medium text-[48px] md:text-[48px] leading-[1.05] tracking-[-0.04em] text-[#212121]">
+          <h2 className="font-clash font-medium text-[40px] md:text-[48px] leading-[1.05] tracking-[-0.04em] text-[#212121]">
             Reaching <span className="text-[#35AB57]">millions</span> across Africa and<br className="hidden md:block" /> beyond
           </h2>
         </div>
 
         <div className="w-full flex justify-end items-start">
-          <div className="w-full max-w-[55vw]">
+          <div className="w-full lg:max-w-[55vw]">
             
             <p className="font-manrope font-medium text-[20px] md:text-[24px] leading-[150%] tracking-[-0.02em] text-left md:text-right">
 

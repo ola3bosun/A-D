@@ -126,8 +126,8 @@ export default function CapabilitiesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full h-[100svh] bg-[#F5F3E9] flex items-center overflow-hidden">
-      <div className="max-w-[90rem] mx-auto px-6 md:px-12 w-full flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
+    <section ref={sectionRef} className="w-full min-h-[100svh] lg:h-[100svh] py-16 lg:py-0 bg-[#F5F3E9] flex items-center overflow-hidden">
+      <div className="max-w-[90rem] mx-auto px-6 md:px-12 w-full flex flex-col lg:flex-row gap-8 lg:gap-24 items-center">
         
        {/* LEFT SIDE: Dynamic Asset Stack */}
         <div 

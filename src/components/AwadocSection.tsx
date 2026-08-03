@@ -47,7 +47,7 @@ export default function AwadocSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#111111] py-20 overflow-hidden relative max-h-100svh">
+    <section ref={sectionRef} className="w-full bg-[#111111] py-20 overflow-hidden relative">
 
       
       {/* Background abstract shape */}

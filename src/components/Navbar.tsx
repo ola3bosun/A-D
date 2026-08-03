@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 // MAIN NAVBAR COMPONENT
 export default function AprokoNavbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navContainerRef = useRef<HTMLDivElement>(null);
   const pillRef = useRef<HTMLDivElement>(null);
@@ -278,11 +279,40 @@ export default function AprokoNavbar() {
         </div>
 
         {/* CTA BUTTON */}
-        <div className="nav-item">
+        <div className="nav-item hidden md:block">
           <button className="ml-8 bg-[#0A0A0A] text-white px-3 py-3 font-clash font-medium text-[16px] leading-[150%] tracking-wide shadow-md transition-transform duration-300 hover:scale-105 rounded-lg">
             Discover awadoc
           </button>
         </div>
+
+        {/* MOBILE MENU TOGGLE */}
+        <div className="nav-item md:hidden flex items-center ml-4">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-[#0A0A0A] focus:outline-none bg-white/50 rounded-lg backdrop-blur-md"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* MOBILE MENU OVERLAY */}
+      <div 
+        className={`fixed top-0 left-0 w-full h-[100svh] bg-[#0A0A0A] text-[#F5F3E9] z-[-1] transition-all duration-500 ease-in-out flex flex-col justify-center items-center gap-8 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-8'}`}
+      >
+        <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="font-clash font-medium text-3xl">About</a>
+        <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="font-clash font-medium text-3xl">Events</a>
+        <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="font-clash font-medium text-3xl">Resources</a>
+        <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="font-clash font-medium text-3xl">Contact</a>
+        <button onClick={() => setIsMobileMenuOpen(false)} className="mt-8 bg-[#35AB57] text-white px-8 py-4 font-clash font-medium text-xl shadow-md rounded-xl">
+          Discover awadoc
+        </button>
       </div>
     </div>
   );
