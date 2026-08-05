@@ -52,7 +52,6 @@ export default function ImpactSection() {
         repeat: -1
       });
 
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -78,7 +77,7 @@ export default function ImpactSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full h-svh bg-[#F5F3E9] flex flex-col pt-2 md:pt-2 overflow-hidden relative">
+    <section ref={sectionRef} className="w-full min-h-[80vh] lg:h-svh bg-[#F5F3E9] flex flex-col pt-2 md:pt-2 overflow-hidden relative z-10">
       
       {/* --- TOP BAR: Marquee + Recognized By --- */}
       <div className="w-full md:px-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12 shrink-0">
@@ -112,9 +111,9 @@ export default function ImpactSection() {
 
       </div>
 
-      <div className="p-8 w-full mx-auto">
+      <div className="px-4 md:px-8 py-8 md:py-12 w-full mx-auto">
         
-        <div className="w-full lg:max-w-[55vw] mb-8 md:mb-12">
+        <div className="w-full lg:max-w-[55vw] mb-6 md:mb-12">
           <p className="text-[#8E8E8E] text-sm font-medium mb-4 tracking-wide font-manrope">
             Impact
           </p>
@@ -123,7 +122,7 @@ export default function ImpactSection() {
           </h2>
         </div>
 
-        <div className="w-full flex justify-end items-start">
+        <div className="w-full flex justify-start md:justify-end items-start">
           <div className="w-full lg:max-w-[55vw]">
             
             <p className="font-manrope font-medium text-[20px] md:text-[24px] leading-[150%] tracking-[-0.02em] text-left md:text-right">

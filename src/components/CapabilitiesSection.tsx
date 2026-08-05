@@ -126,90 +126,92 @@ export default function CapabilitiesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full min-h-[100svh] lg:h-[100svh] py-16 lg:py-0 bg-[#F5F3E9] flex items-center overflow-hidden">
-      <div className="max-w-[90rem] mx-auto px-6 md:px-12 w-full flex flex-col lg:flex-row gap-8 lg:gap-24 items-center">
-        
-       {/* LEFT SIDE: Dynamic Asset Stack */}
-        <div 
-          data-cursor-text="Play"
-          className="w-full lg:w-[45%] h-[40vh] lg:h-[75vh] relative rounded-[2rem] overflow-hidden shadow-xl bg-gray-200 shrink-0"
-        >
-          {capabilities.map((item, index) => {
-            const isVideo = item.type === "video";
-
-            return isVideo ? (
-              <video
-                key={item.id}
-                src={item.videoSrc}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                // FIXED: Now z-index increases (1, 2, 3), allowing next videos to stack ON TOP
-                style={{ zIndex: index + 1 }} 
-                className="media-layer absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
-              />
-            ) : (
-              <img
-                key={item.id}
-                src={item.videoSrc}
-                alt={item.title}
-                // FIXED: Matches the video z-index logic
-                style={{ zIndex: index + 1 }} 
-                className="media-layer absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
-              />
-            );
-          })}
-        </div>
-
-        {/* RIGHT SIDE: The Text Timeline */}
-        <div className="w-full lg:w-[55%] flex flex-col justify-center">
-          {capabilities.map((item, index) => { // Standardized map loop to 'index'
-            const Icon = item.icon;
-            return (
-              <div 
-                key={item.id} 
-                // The 'text-layer' class connects it to the timeline
-                className="text-layer flex gap-4 md:gap-6 mb-8 md:mb-10 last:mb-8 transition-opacity duration-300"
-              >
-                <div className="icon-layer shrink-0 mt-1 transition-all duration-300">
-                  <Icon className={`w-6 h-6 md:w-8 md:h-8 ${item.iconColor}`} />
-                </div>
-
-                <div className="flex-1">
-                  <h3 className="font-clash font-medium text-lg md:text-xl text-[#1A1A1A] mb-2 md:mb-3">
-                    {item.title}
-                  </h3>
-                  
-                  {/* Dynamic class to tie text spans to their specific index block */}
-                  <p className={`char-group-${index} font-manrope text-sm md:text-base leading-relaxed text-[#1A1A1A] max-w-lg`}>
-                    {item.text.split(" ").map((word, wIndex) => (
-                      <span key={wIndex} className="inline-block mr-[0.25em] whitespace-nowrap">
-                        {word.split("").map((char, cIndex) => (
-                          <span 
-                            key={cIndex}
-                            className="split-char text-[#47474740] will-change-colors transition-colors duration-150" 
-                          >
-                            {char}
-                          </span>
-                        ))}
-                      </span>
-                    ))}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-
-          <div className="ml-10 md:ml-14 mt-4">
-            <button className="cta-btn px-6 py-3 border border-gray-300 rounded-lg font-manrope font-semibold text-[#1A1A1A] hover:bg-gray-100 transition-all duration-300 shadow-sm bg-transparent">
-              Let's Talk Health
-            </button>
+    <div className="w-full bg-[#F5F3E9] relative z-20">
+      <section ref={sectionRef} className="w-full min-h-[100svh] lg:h-[100svh] py-16 lg:py-0 bg-[#F5F3E9] flex items-center overflow-hidden">
+        <div className="max-w-[90rem] mx-auto px-6 md:px-12 w-full flex flex-col lg:flex-row gap-8 lg:gap-24 items-center">
+          
+         {/* LEFT SIDE: Dynamic Asset Stack */}
+          <div 
+            data-cursor-text="Play"
+            className="w-full lg:w-[45%] h-[40vh] lg:h-[75vh] relative rounded-[2rem] overflow-hidden shadow-xl bg-gray-200 shrink-0"
+          >
+            {capabilities.map((item, index) => {
+              const isVideo = item.type === "video";
+  
+              return isVideo ? (
+                <video
+                  key={item.id}
+                  src={item.videoSrc}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  // FIXED: Now z-index increases (1, 2, 3), allowing next videos to stack ON TOP
+                  style={{ zIndex: index + 1 }} 
+                  className="media-layer absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
+                />
+              ) : (
+                <img
+                  key={item.id}
+                  src={item.videoSrc}
+                  alt={item.title}
+                  // FIXED: Matches the video z-index logic
+                  style={{ zIndex: index + 1 }} 
+                  className="media-layer absolute inset-0 w-full h-full object-cover origin-bottom will-change-transform"
+                />
+              );
+            })}
           </div>
-
+  
+          {/* RIGHT SIDE: The Text Timeline */}
+          <div className="w-full lg:w-[55%] flex flex-col justify-center">
+            {capabilities.map((item, index) => { // Standardized map loop to 'index'
+              const Icon = item.icon;
+              return (
+                <div 
+                  key={item.id} 
+                  // The 'text-layer' class connects it to the timeline
+                  className="text-layer flex gap-4 md:gap-6 mb-8 md:mb-10 last:mb-8 transition-opacity duration-300"
+                >
+                  <div className="icon-layer shrink-0 mt-1 transition-all duration-300">
+                    <Icon className={`w-6 h-6 md:w-8 md:h-8 ${item.iconColor}`} />
+                  </div>
+  
+                  <div className="flex-1">
+                    <h3 className="font-clash font-medium text-lg md:text-xl text-[#1A1A1A] mb-2 md:mb-3">
+                      {item.title}
+                    </h3>
+                    
+                    {/* Dynamic class to tie text spans to their specific index block */}
+                    <p className={`char-group-${index} font-manrope text-sm md:text-base leading-relaxed text-[#1A1A1A] max-w-lg`}>
+                      {item.text.split(" ").map((word, wIndex) => (
+                        <span key={wIndex} className="inline-block mr-[0.25em] whitespace-nowrap">
+                          {word.split("").map((char, cIndex) => (
+                            <span 
+                              key={cIndex}
+                              className="split-char text-[#47474740] will-change-colors transition-colors duration-150" 
+                            >
+                              {char}
+                            </span>
+                          ))}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+  
+            <div className="ml-10 md:ml-14 mt-4">
+              <button className="cta-btn px-6 py-3 border border-gray-300 rounded-lg font-manrope font-semibold text-[#1A1A1A] hover:bg-gray-100 transition-all duration-300 shadow-sm bg-transparent">
+                Let's Talk Health
+              </button>
+            </div>
+  
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

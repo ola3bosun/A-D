@@ -37,24 +37,33 @@ export default function VideoCarousel({ videos, sectionRef }: VideoCarouselProps
       
       if (!track || !section) return;
 
-      const getScrollAmount = () => {
-        let trackWidth = track.scrollWidth;
-        return -(trackWidth - window.innerWidth + 80); 
-      };
+      let mm = gsap.matchMedia();
 
-      const tween = gsap.to(track, {
-        x: getScrollAmount,
-        ease: "none",
+      mm.add("(min-width: 1024px)", () => {
+        const getScrollAmount = () => {
+          let trackWidth = track.scrollWidth;
+          return -(trackWidth - window.innerWidth + 80); 
+        };
+
+        const tween = gsap.to(track, {
+          x: getScrollAmount,
+          ease: "none",
+        });
+
+        ScrollTrigger.create({
+          trigger: section, 
+          start: "top top",
+          end: () => `+=${getScrollAmount() * -1}`, 
+          pin: true,
+          animation: tween,
+          scrub: 1, 
+          invalidateOnRefresh: true, 
+        });
       });
 
-      ScrollTrigger.create({
-        trigger: section, 
-        start: "top top",
-        end: () => `+=${getScrollAmount() * -1}`, 
-        pin: true,
-        animation: tween,
-        scrub: 1, 
-        invalidateOnRefresh: true, 
+      mm.add("(max-width: 1023px)", () => {
+        // Clear any GSAP transforms so native scroll can take over
+        gsap.set(track, { clearProps: "all" });
       });
 
       setTimeout(() => ScrollTrigger.refresh(), 100);
@@ -65,7 +74,7 @@ export default function VideoCarousel({ videos, sectionRef }: VideoCarouselProps
   }, [videos, sectionRef]);
 
   return (
-    <div className="relative w-full pl-6 md:pl-12 mt-8 md:mt-12">
+    <div className="relative w-full pl-0 md:pl-12 mt-8 md:mt-12 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-hide">
       <div 
         ref={trackRef} 
         className="flex flex-nowrap items-start gap-6 md:gap-8 w-max will-change-transform px-6 md:px-12 pb-8"
@@ -95,7 +104,7 @@ export default function VideoCarousel({ videos, sectionRef }: VideoCarouselProps
               data-cursor-text="Play"
               key={video.id} 
               href={video.href}
-              className={`group flex flex-col shrink-0 w-[85vw] md:w-[35vw] max-w-[480px] cursor-pointer rounded-[2rem] overflow-hidden ${cardBg} shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100/50 transition-all duration-300 hover:-translate-y-4 hover:shadow-2xl ${hoverClasses}`}
+              className={`snap-center group flex flex-col shrink-0 w-[85vw] md:w-[35vw] max-w-[480px] cursor-pointer rounded-[2rem] overflow-hidden ${cardBg} shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100/50 transition-all duration-300 hover:-translate-y-4 hover:shadow-2xl ${hoverClasses}`}
             >
               {/* Thumbnail */}
               <div className="w-full md:p-2 pb-0 shrink-0">
