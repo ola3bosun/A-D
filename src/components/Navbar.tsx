@@ -10,11 +10,21 @@ gsap.registerPlugin(ScrollTrigger);
 export default function AprokoNavbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileResourcesOpen, setIsMobileResourcesOpen] = useState(false);
 
   const navContainerRef = useRef<HTMLDivElement>(null);
   const pillRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const chevronRef = useRef<SVGSVGElement>(null);
+  
+  // Mobile Menu Refs
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileTimeline = useRef<gsap.core.Timeline | null>(null);
+  const mobileLinksRef = useRef<(HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | null)[]>([]);
+  const mobileFooterRef = useRef<HTMLDivElement>(null);
+  const hamburgerTopRef = useRef<HTMLSpanElement>(null);
+  const hamburgerBottomRef = useRef<HTMLSpanElement>(null);
+  const mobileResourcesContentRef = useRef<HTMLDivElement>(null);
 
   // 1. ENTRANCE & SCROLL CHOREOGRAPHY
   useEffect(() => {
@@ -125,6 +135,103 @@ export default function AprokoNavbar() {
     return () => ctx.revert();
   }, [isDropdownOpen]);
 
+  // MOBILE MENU CHOREOGRAPHY
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      // Initialize Timeline
+      mobileTimeline.current = gsap.timeline({ paused: true });
+
+      // Build the timeline sequence
+      mobileTimeline.current
+        // 1. Reveal Background (Clip-path expand from top right corner)
+        .to(mobileMenuRef.current, {
+          clipPath: "circle(150% at 95% 40px)",
+          duration: 0.5,
+          ease: "expo.inOut",
+        })
+        // 2. Animate hamburger lines to "X"
+        .to(
+          hamburgerTopRef.current,
+          { y: 4, rotation: 45, duration: 0.3, ease: "power3.inOut" },
+          "<0.1"
+        )
+        .to(
+          hamburgerBottomRef.current,
+          { y: -4, rotation: -45, duration: 0.3, ease: "power3.inOut" },
+          "<"
+        )
+        // 3. Stagger links sliding up
+        .fromTo(
+          mobileLinksRef.current,
+          { y: "100%" },
+          {
+            y: "0%",
+            duration: 0.4,
+            stagger: 0.05,
+            ease: "power3.out",
+          },
+          "<0.2"
+        )
+        // 4. Fade in footer
+        .fromTo(
+          mobileFooterRef.current,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+          "-=0.2"
+        );
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  // Play / Reverse timeline based on state
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      mobileTimeline.current?.play();
+      document.body.style.overflow = "hidden"; // Prevent scrolling
+    } else {
+      mobileTimeline.current?.reverse();
+      document.body.style.overflow = "unset";
+      // Close accordion when menu closes
+      setTimeout(() => setIsMobileResourcesOpen(false), 500);
+    }
+    return () => { document.body.style.overflow = "unset"; };
+  }, [isMobileMenuOpen]);
+
+  // Mobile Resources Accordion Animation
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      if (!mobileResourcesContentRef.current) return;
+      if (isMobileResourcesOpen) {
+        gsap.to(mobileResourcesContentRef.current, {
+          height: "auto",
+          opacity: 1,
+          duration: 0.4,
+          ease: "power3.out"
+        });
+        gsap.fromTo(
+          ".mobile-resource-item",
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: "power2.out", delay: 0.1 }
+        );
+      } else {
+        gsap.to(mobileResourcesContentRef.current, {
+          height: 0,
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.inOut"
+        });
+      }
+    });
+    return () => ctx.revert();
+  }, [isMobileResourcesOpen]);
+
+  const addToLinksRef = (el: HTMLAnchorElement | HTMLButtonElement | HTMLDivElement | null) => {
+    if (el && !mobileLinksRef.current.includes(el)) {
+      mobileLinksRef.current.push(el);
+    }
+  };
+
   return (
     <div
       ref={navContainerRef}
@@ -132,9 +239,9 @@ export default function AprokoNavbar() {
     >
       <div
         ref={pillRef}
-        className="relative flex items-center justify-between w-fit max-w-6xl bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-xl"
+        className="relative flex items-center justify-between w-full max-w-6xl bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-xl z-[60] mx-auto"
       >
-        <div className="nav-item flex items-center justify-center bg-[#0A0A0A] rounded-[8px] w-[104px] h-[54px] mr-4 shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-pointer p-3 overflow-hidden">
+        <div className="nav-item flex items-center justify-center bg-[#0A0A0A] rounded-[8px] w-[80px] h-[44px] mr-4 shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-pointer p-2 overflow-hidden">
           <img
             src={AprokoLogo}
             alt="Aproko Logo"
@@ -286,33 +393,86 @@ export default function AprokoNavbar() {
         </div>
 
         {/* MOBILE MENU TOGGLE */}
-        <div className="nav-item md:hidden flex items-center ml-4">
+        <div className="nav-item md:hidden flex items-center ml-4 z-[60]">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-[#0A0A0A] focus:outline-none bg-white/50 rounded-lg backdrop-blur-md"
+            className={`relative p-2 w-10 h-10 flex flex-col justify-center items-center gap-[6px] focus:outline-none rounded-lg backdrop-blur-md transition-colors duration-300 ${isMobileMenuOpen ? 'text-[#F5F3E9]' : 'bg-white/50 text-[#0A0A0A]'}`}
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            <span ref={hamburgerTopRef} className={`block w-6 h-[2px] rounded-full transition-colors duration-300 ${isMobileMenuOpen ? 'bg-[#F5F3E9]' : 'bg-[#0A0A0A]'}`}></span>
+            <span ref={hamburgerBottomRef} className={`block w-6 h-[2px] rounded-full transition-colors duration-300 ${isMobileMenuOpen ? 'bg-[#F5F3E9]' : 'bg-[#0A0A0A]'}`}></span>
           </button>
         </div>
       </div>
 
-      {/* MOBILE MENU OVERLAY */}
+      {/* AWWWARDS-LEVEL MOBILE MENU OVERLAY */}
       <div 
-        className={`fixed top-0 left-0 w-full h-[100svh] bg-[#0A0A0A] text-[#F5F3E9] z-[-1] transition-all duration-500 ease-in-out flex flex-col justify-center items-center gap-8 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-8'}`}
+        ref={mobileMenuRef}
+        className={`fixed top-0 left-0 w-full h-[100svh] bg-[#0A0A0A] text-[#F5F3E9] z-[55] flex flex-col pt-28 pb-8 px-6 overflow-y-auto ${isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+        style={{ clipPath: "circle(0% at 95% 40px)" }}
       >
-        <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="font-clash font-medium text-3xl">About</a>
-        <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="font-clash font-medium text-3xl">Events</a>
-        <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="font-clash font-medium text-3xl">Resources</a>
-        <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="font-clash font-medium text-3xl">Contact</a>
-        <button onClick={() => setIsMobileMenuOpen(false)} className="mt-8 bg-[#35AB57] text-white px-8 py-4 font-clash font-medium text-xl shadow-md rounded-xl">
-          Discover awadoc
-        </button>
+        <div className="flex-1 flex flex-col gap-6 w-full max-w-sm mx-auto">
+          {/* Main Links */}
+          <div className="overflow-hidden">
+            <a href="#" ref={addToLinksRef} onClick={() => setIsMobileMenuOpen(false)} className="block font-clash font-semibold text-5xl tracking-tight transition-transform hover:translate-x-2 hover:text-[#35AB57] duration-300">
+              About
+            </a>
+          </div>
+          <div className="overflow-hidden">
+            <a href="#" ref={addToLinksRef} onClick={() => setIsMobileMenuOpen(false)} className="block font-clash font-semibold text-5xl tracking-tight transition-transform hover:translate-x-2 hover:text-[#35AB57] duration-300">
+              Events
+            </a>
+          </div>
+
+          {/* Resources Accordion */}
+          <div className="overflow-hidden w-full">
+            <div ref={addToLinksRef} className="flex flex-col w-full">
+              <button 
+                onClick={() => setIsMobileResourcesOpen(!isMobileResourcesOpen)} 
+                className="w-full text-left flex items-center justify-between font-clash font-semibold text-5xl tracking-tight group"
+              >
+                <span className="transition-transform group-hover:translate-x-2 group-hover:text-[#35AB57] duration-300">Resources</span>
+                <svg className={`w-8 h-8 transition-transform duration-300 ${isMobileResourcesOpen ? 'rotate-180 text-[#35AB57]' : 'text-gray-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              <div ref={mobileResourcesContentRef} className="h-0 opacity-0 overflow-hidden ml-4">
+                <div className="flex flex-col gap-4 mt-6 mb-2 border-l-2 border-[#35AB57]/30 pl-6">
+                  <a href="#" className="mobile-resource-item font-clash text-2xl text-gray-300 hover:text-white transition-colors">Health Articles</a>
+                  <a href="#" className="mobile-resource-item font-clash text-2xl text-gray-300 hover:text-white transition-colors">Medical Reports</a>
+                  <a href="#" className="mobile-resource-item font-clash text-2xl text-gray-300 hover:text-white transition-colors">Video Guides</a>
+                  <a href="#" className="mobile-resource-item font-clash text-2xl text-gray-300 hover:text-white transition-colors">Unclog Podcast</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="overflow-hidden">
+            <a href="#" ref={addToLinksRef} onClick={() => setIsMobileMenuOpen(false)} className="block font-clash font-semibold text-5xl tracking-tight transition-transform hover:translate-x-2 hover:text-[#35AB57] duration-300">
+              Contact
+            </a>
+          </div>
+          
+          <div className="overflow-hidden mt-6">
+            <button ref={addToLinksRef} onClick={() => setIsMobileMenuOpen(false)} className="w-full bg-[#35AB57] text-white px-8 py-5 font-clash font-medium text-2xl shadow-md rounded-xl transition-transform active:scale-95">
+              Discover awadoc
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Footer Area */}
+        <div ref={mobileFooterRef} className="mt-auto pt-8 border-t border-white/10 w-full max-w-sm mx-auto flex justify-between items-end pb-4">
+          <div className="flex flex-col gap-2">
+            <span className="font-manrope text-sm text-gray-400 uppercase tracking-widest">Connect</span>
+            <div className="flex gap-4">
+              <a href="#" className="text-white hover:text-[#35AB57] transition-colors">Twitter</a>
+              <a href="#" className="text-white hover:text-[#35AB57] transition-colors">Instagram</a>
+              <a href="#" className="text-white hover:text-[#35AB57] transition-colors">LinkedIn</a>
+            </div>
+          </div>
+          <div className="text-right">
+            <span className="font-manrope text-sm text-gray-400">© {new Date().getFullYear()} Aproko Doctor</span>          </div>
+        </div>
       </div>
     </div>
   );
