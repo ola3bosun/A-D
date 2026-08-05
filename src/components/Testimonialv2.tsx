@@ -173,7 +173,7 @@ export default function VoicesOfChange() {
                 type="email"
                 placeholder="emekankechi@email.com"
                 // flex-[3] makes the input take up roughly 75% of the row
-                className="flex-[3] bg-[#47474710] placeholder:text-gray-400 text-gray-800 rounded-[4px] px-6 py-5 text-base md:text-lg focus:outline-none focus:ring-2 focus:ring-[#35AB57] transition-all font-manrope font-regular text-base line-height-[150%] tracking-[-0.025em]"
+                className="flex-[3] bg-[#474747]/10 placeholder:text-gray-400 text-gray-800 rounded-[4px] px-6 py-5 text-base md:text-lg focus:outline-none focus:ring-2 focus:ring-[#35AB57] transition-all font-manrope font-regular text-base line-height-[150%] tracking-[-0.025em]"
               />
               <button
                 type="submit"

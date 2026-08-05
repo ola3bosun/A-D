@@ -56,7 +56,7 @@ export default function AwadocSection() {
           viewBox="0 0 471 874"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-[150vh] object-cover opacity-20"
+          className="w-full h-[150svh] object-cover opacity-20"
         >
           <path
             d="M202.089 879.036C202.089 879.036 502.322 309.148 451.087 125.6C445.425 99.6308 434.198 75.1901 418.18 53.9614C402.161 32.7326 381.731 15.2203 358.298 2.63113C334.398 -10.2315 308.102 -18.0213 281.059 -20.2493C254.016 -22.4773 226.812 -19.0953 201.153 -10.3156C174.637 -4.62091 149.592 6.49087 127.591 22.3223C105.589 38.1537 87.1063 58.363 73.3017 81.6815C59.7519 104.546 51.3308 130.082 48.6191 156.527C45.9074 182.973 48.9697 209.699 57.5948 234.861C108.829 418.41 661.148 751.626 661.148 751.626"
@@ -109,11 +109,11 @@ export default function AwadocSection() {
 
           {/* Partner Logos */}
           <div className="awadoc-reveal flex flex-wrap items-center gap-6 md:gap-8 mb-12">
-            <img src={hipaa} alt="HIPAA Compliant" />
-            <img src={ndpcLogo} alt="NDPC Partner" />
-            <img src={gdprLogo} alt="GDPR Compliant" />
-            <img src={clafiyaLogo} alt="Clafiya Partner" />
-            <img src={wellahealthLogo} alt="Wella Health Partner" />
+            <img src={hipaa} alt="HIPAA Compliant" className="h-8 md:h-10 w-auto object-contain" />
+            <img src={ndpcLogo} alt="NDPC Partner" className="h-8 md:h-10 w-auto object-contain" />
+            <img src={gdprLogo} alt="GDPR Compliant" className="h-8 md:h-10 w-auto object-contain" />
+            <img src={clafiyaLogo} alt="Clafiya Partner" className="h-8 md:h-10 w-auto object-contain" />
+            <img src={wellahealthLogo} alt="Wella Health Partner" className="h-8 md:h-10 w-auto object-contain" />
           </div>
 
           {/* Call to Action Button */}
@@ -134,7 +134,7 @@ export default function AwadocSection() {
             <div className="border border-dashed border-white rounded-[9.3px] overflow-hidden">
               <div className="relative w-full h-100% overflow-hidden bg-gray-900">
                  
-                  <img src={oldWomanImg} alt="Woman using phone" className="w-full h-full aspect-4/3 object-cover" />
+                  <img src={oldWomanImg} alt="Woman using phone" className="w-full h-full aspect-[4/3] object-cover" />
                 
               </div>
             </div>

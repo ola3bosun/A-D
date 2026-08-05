@@ -89,13 +89,13 @@ export default function AprokoNavbar() {
         gsap.to(dropdownRef.current, {
           height: "auto",
           opacity: 1,
-          duration: 0.4,
-          ease: "power3.out",
+          duration: 0.6,
+          ease: "power3.inOut",
         });
         gsap.to(chevronRef.current, {
           rotation: 180,
-          duration: 0.3,
-          ease: "power2.inOut",
+          duration: 0.5,
+          ease: "power3.inOut",
         });
         gsap.fromTo(
           ".dropdown-item",
@@ -103,9 +103,9 @@ export default function AprokoNavbar() {
           {
             y: 0,
             opacity: 1,
-            duration: 0.3,
-            stagger: 0.05,
-            ease: "power2.out",
+            duration: 0.4,
+            stagger: 0.1,
+            ease: "power3.out",
             delay: 0.1,
           },
         );
@@ -114,20 +114,20 @@ export default function AprokoNavbar() {
         gsap.to(".dropdown-item", {
           y: -10,
           opacity: 0,
-          duration: 0.2,
+          duration: 0.3,
           stagger: 0.02,
         });
         gsap.to(dropdownRef.current, {
           height: 0,
           opacity: 0,
-          duration: 0.3,
-          ease: "power2.in",
+          duration: 0.5,
+          ease: "power3.inOut",
           delay: 0.1,
         });
         gsap.to(chevronRef.current, {
           rotation: 0,
-          duration: 0.3,
-          ease: "power2.inOut",
+          duration: 0.5,
+          ease: "power3.inOut",
         });
       }
     });
@@ -146,31 +146,32 @@ export default function AprokoNavbar() {
         // 1. Reveal Background (Clip-path expand from top right corner)
         .to(mobileMenuRef.current, {
           clipPath: "circle(150% at 95% 40px)",
-          duration: 0.5,
-          ease: "expo.inOut",
+          duration: 0.8,
+          ease: "power4.inOut",
         })
         // 2. Animate hamburger lines to "X"
         .to(
           hamburgerTopRef.current,
-          { y: 4, rotation: 45, duration: 0.3, ease: "power3.inOut" },
+          { y: 4, rotation: 45, duration: 0.4, ease: "power4.inOut" },
           "<0.1"
         )
         .to(
           hamburgerBottomRef.current,
-          { y: -4, rotation: -45, duration: 0.3, ease: "power3.inOut" },
+          { y: -4, rotation: -45, duration: 0.4, ease: "power4.inOut" },
           "<"
         )
         // 3. Stagger links sliding up
         .fromTo(
           mobileLinksRef.current,
-          { y: "100%" },
+          { y: "50%", opacity: 0 },
           {
             y: "0%",
-            duration: 0.4,
-            stagger: 0.05,
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.15,
             ease: "power3.out",
           },
-          "<0.2"
+          "<0.3"
         )
         // 4. Fade in footer
         .fromTo(
@@ -206,20 +207,20 @@ export default function AprokoNavbar() {
         gsap.to(mobileResourcesContentRef.current, {
           height: "auto",
           opacity: 1,
-          duration: 0.4,
-          ease: "power3.out"
+          duration: 0.6,
+          ease: "power3.inOut"
         });
         gsap.fromTo(
           ".mobile-resource-item",
           { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: "power2.out", delay: 0.1 }
+          { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out", delay: 0.1 }
         );
       } else {
         gsap.to(mobileResourcesContentRef.current, {
           height: 0,
           opacity: 0,
-          duration: 0.3,
-          ease: "power2.inOut"
+          duration: 0.5,
+          ease: "power3.inOut"
         });
       }
     });
@@ -239,7 +240,7 @@ export default function AprokoNavbar() {
     >
       <div
         ref={pillRef}
-        className="relative flex items-center justify-between w-full max-w-6xl bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-xl z-[60] mx-auto"
+        className="relative flex items-center justify-between w-full md:w-max bg-[#FFC40040] rounded-lg px-3 py-3 backdrop-blur-xl z-[60] mx-auto"
       >
         <div className="nav-item flex items-center justify-center bg-[#0A0A0A] rounded-[8px] w-[80px] h-[44px] mr-4 shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-pointer p-2 overflow-hidden">
           <img

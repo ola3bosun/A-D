@@ -134,7 +134,7 @@ export default function AprokoFooter() {
       // 4. The Glass Reveal (Rises up from the bottom, slightly scaling up)
       gsap.fromTo(
         glassRef.current,
-        { y: "100vh", scale: 0.9 }, // Hidden below the floor
+        { y: "100%", scale: 0.9 }, // Hidden below the floor
         {
           y: "50%", // Rests perfectly at the bottom
           scale: 1,
@@ -155,7 +155,7 @@ export default function AprokoFooter() {
   return (
     <footer
       ref={footerRef}
-      className="bg-[#151515] text-[#E5E5E5] pt-12 md:pt-20 overflow-hidden relative font-clash h-[100svh] w-full flex flex-col justify-between"
+      className="bg-[#151515] text-[#E5E5E5] pt-12 md:pt-20 overflow-hidden relative font-clash min-h-[100svh] w-full flex flex-col justify-between"
     >
       {/* --- Top Section: Grid --- */}
       <div className="w-full mx-auto px-6 md:px-12 shrink-0 z-20 relative">
@@ -291,7 +291,7 @@ export default function AprokoFooter() {
         <h1
           ref={bigTextRef}
           className="absolute bottom-[-25%] left-[-7.5%] w-full text-center font-clash text-[#212121]/75 leading-none tracking-[-0.04em] select-none z-10 whitespace-nowrap"
-          style={{ fontSize: "clamp(7rem, 24vw, 33rem)" }}
+          style={{ fontSize: "clamp(4rem, 20vw, 33rem)" }}
         >
           drink water
         </h1>
